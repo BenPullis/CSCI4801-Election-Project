@@ -1,0 +1,72 @@
+---
+config:
+  look: classic
+---
+classDiagram
+direction TB
+    class IElection {
+        #int numSeats
+        #HelpWindow helpWindow
+        #AuditReport reportGenerator
+        #FileHandler FileHandler
+        #Vector~Ballot~ ballots
+        <<abstract>>
+        +run()void
+        +breakTie(vector~Candidates~) Candidate
+        #vector~Candidate~ candidates
+    }
+    class HelpWindow {
+        -HelpWindow instance
+        -HelpWindow()
+        +getInstance() HelpWindow
+        +getHelp() String
+    }
+    class AuditReport {
+        +AuditReport()
+        +generateReport(String[] details)void
+    }
+    class STVElection {
+        -Vector~Candidate~ winnersList
+        -Vector~Candidate~ losersList
+        -int droopQuota
+        +run()void
+        -calculateDroop(int numBallots)int
+    }
+    class PluralityElection {
+        -Vector~String candidateName~ winnersList
+        +run()void
+    }
+    class BallotHandler {
+        +handleFiles()
+        +recieveBallots() Vector~Ballot~
+        +shuffleBallots(Vector~Ballot~)Vector~Ballot~
+    }
+    class Ballot {
+        -int id
+        -int preference
+        -map~String candidateName: int candidateRank~ candidateRanking
+        -getCandidateRanking() candidateRanking
+        +getId()int
+        +getPreference()int
+        +setPreference(int preference)void
+    }
+
+    class Candidate {
+        -String candidateName
+        +getName() String
+        -String candidateParty
+        +getParty() String
+        -int firstVote
+        +getFirstVote() int
+        +setFirstVote(int firstVote)
+    }
+
+    BallotHandler --* IElection
+    Ballot --* IElection
+    AuditReport --* IElection
+    HelpWindow --* IElection
+    IElection ..|> STVElection
+    IElection ..|> PluralityElection
+    Ballot -- BallotHandler
+    Candidate -- BallotHandler
+    Candidate --* IElection

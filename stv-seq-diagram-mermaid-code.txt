@@ -1,0 +1,40 @@
+sequenceDiagram
+    actor Election Official
+    activate Election Official
+    Election Official->>S#58; STVElection: run()
+    activate S#58; STVElection
+    opt user shuffles ballots
+        S#58; STVElection->>BH#58; BallotHandler: shuffleBallots()
+        activate BH#58; BallotHandler
+        BH#58; BallotHandler-->>S#58; STVElection: shuffled ballots
+        deactivate BH#58; BallotHandler
+    end
+    S#58; STVElection->>S#58; STVElection: calculateDroopQuota(numBallots)
+    loop While there are still unprocessed ballots or seats unassigned
+        activate B#58; Ballot
+        loop for each ballot
+            S#58; STVElection->>B#58; Ballot: getID()
+            B#58; Ballot-->>S#58; STVElection: ballot ID
+            S#58; STVElection->>B#58; Ballot: getPreference()
+            B#58; Ballot-->>S#58; STVElection: preference
+            S#58; STVElection->>S#58; STVElection: updateCandidatePiles(ballotId, preference)
+        end
+        alt a candidate reaches quota
+            S#58; STVElection->>S#58; STVElection: updateElectedLists(candidatePiles)
+        else no candidate elected 
+            S#58; STVElection->>S#58; STVElection: updateNonElectedLists(candidatePiles)
+            opt a tie occurs when eliminating a candidate
+                S#58; STVElection->>S#58; STVElection: breakTie(candidatePiles)
+            end
+        end
+        loop for each ballot in most recently elected/eliminated candidate's candidatePiles 
+            S#58; STVElection->>B#58; Ballot: getCandidateRankings()
+            B#58; Ballot-->>S#58; STVElection: candidate rankings
+            S#58; STVElection->>B#58; Ballot: setPreference(newPreference)
+        end
+        deactivate B#58; Ballot
+    end
+    S#58; STVElection-->>Election Official: elected and non-elected lists
+    deactivate S#58; STVElection
+    deactivate Election Official
+
