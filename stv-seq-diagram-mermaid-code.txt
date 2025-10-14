@@ -13,21 +13,19 @@ sequenceDiagram
     loop While there are still unprocessed ballots or seats unassigned
         activate B#58; Ballot
         loop for each ballot
-            S#58; STVElection->>B#58; Ballot: getID()
-            B#58; Ballot-->>S#58; STVElection: ballot ID
             S#58; STVElection->>B#58; Ballot: getPreference()
             B#58; Ballot-->>S#58; STVElection: preference
-            S#58; STVElection->>S#58; STVElection: updateCandidatePiles(ballotId, preference)
+            S#58; STVElection->>S#58; STVElection: updateCandidatePiles(preference)
         end
         alt a candidate reaches quota
-            S#58; STVElection->>S#58; STVElection: updateElectedLists(candidatePiles)
-        else no candidate elected 
-            S#58; STVElection->>S#58; STVElection: updateNonElectedLists(candidatePiles)
+            S#58; STVElection->>S#58; STVElection: addWinner(winner)
+        else no candidate elected
             opt a tie occurs when eliminating a candidate
-                S#58; STVElection->>S#58; STVElection: breakTie(candidatePiles)
+                S#58; STVElection->>S#58; STVElection: breakTie(tiedCandidates)
             end
+            S#58; STVElection->>S#58; STVElection: addLoser(loser)
         end
-        loop for each ballot in most recently elected/eliminated candidate's candidatePiles 
+        loop for each ballot in most recently elected/eliminated candidate's candidatePiles
             S#58; STVElection->>B#58; Ballot: getCandidateRankings()
             B#58; Ballot-->>S#58; STVElection: candidate rankings
             S#58; STVElection->>B#58; Ballot: setPreference(newPreference)

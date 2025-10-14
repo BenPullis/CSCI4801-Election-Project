@@ -8,12 +8,15 @@ direction TB
         #int numSeats
         #HelpWindow helpWindow
         #AuditReport reportGenerator
-        #FileHandler FileHandler
+        #BallotHandler ballotHandler
         #Vector~Ballot~ ballots
+        #Vector~Candidate~ winnersList
         <<abstract>>
         +run()void
-        +breakTie(vector~Candidates~) Candidate
-        #vector~Candidate~ candidates
+        #breakTie(vector~Candidates~) Candidate
+        #Vector~Candidate~ candidates
+        #getWinnersList() Vector~Candidate~
+        #addWinner(Candidate candidate) void
     }
     class HelpWindow {
         -HelpWindow instance
@@ -26,14 +29,18 @@ direction TB
         +generateReport(String[] details)void
     }
     class STVElection {
-        -Vector~Candidate~ winnersList
-        -Vector~Candidate~ losersList
+        -Map~String candidateName, int ballotCount~ candidatePiles
         -int droopQuota
-        +run()void
-        -calculateDroop(int numBallots)int
+        -Vector~Candidate~ losersList
+        -getLosersList() Vector~Candidate~
+        -addLoser(Candidate candidate) void
+        -calculateDroopQuota(int numBallots)int
+        -updateCandidatePiles(String preference) void
+        +run() void
     }
     class PluralityElection {
-        -Vector~String candidateName~ winnersList
+        -Map~String candidateName, int ballotCount~ candidateCounts
+        -setCandidateCounts(String candidateName, int ballotCount) void
         +run()void
     }
     class BallotHandler {
@@ -43,12 +50,12 @@ direction TB
     }
     class Ballot {
         -int id
-        -int preference
-        -map~String candidateName: int candidateRank~ candidateRanking
-        -getCandidateRanking() candidateRanking
+        -String preference
+        -Map~String candidateName, int candidateRank~ candidateRanking
+        +getCandidateRanking() Map~String candidateName: int candidateRank~
         +getId()int
-        +getPreference()int
-        +setPreference(int preference)void
+        +getPreference()String
+        +setPreference(String preference)void
     }
 
     class Candidate {
