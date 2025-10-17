@@ -1,29 +1,30 @@
 sequenceDiagram
     actor Election Official
     activate Election Official
-    Election Official->>S#58; STVElection: run()
     activate S#58; STVElection
+    Election Official->>S#58; STVElection: run()
     opt user shuffles ballots
+    activate BH#58; BallotHandler
         S#58; STVElection->>BH#58; BallotHandler: shuffleBallots()
-        activate BH#58; BallotHandler
         BH#58; BallotHandler-->>S#58; STVElection: shuffled ballots
         deactivate BH#58; BallotHandler
     end
-    S#58; STVElection->>S#58; STVElection: calculateDroopQuota(numBallots)
     loop While there are still unprocessed ballots or seats unassigned
-        activate B#58; Ballot
         loop for each ballot
+        activate B#58; Ballot
             S#58; STVElection->>B#58; Ballot: getPreference()
             B#58; Ballot-->>S#58; STVElection: preference
-            S#58; STVElection->>S#58; STVElection: updateCandidatePiles(preference)
-        end
-        alt a candidate reaches quota
-            S#58; STVElection->>S#58; STVElection: addWinner(winner)
-        else no candidate elected
-            opt a tie occurs when eliminating a candidate
-                S#58; STVElection->>S#58; STVElection: breakTie(tiedCandidates)
+            opt Candidate received first vote
+                activate C#58; Candidate
+                S#58; STVElection->>C#58; Candidate: setFirstVote(timestamp)
             end
-            S#58; STVElection->>S#58; STVElection: addLoser(loser)
+        end
+        opt no candidate elected and a tie occurs when eliminating a candidate
+            loop for each candidate that tied 
+                S#58; STVElection->>C#58; Candidate: getFirstVote()
+                C#58; Candidate-->>S#58; STVElection: timestamp of first vote
+                deactivate C#58; Candidate
+            end
         end
         loop for each ballot in most recently elected/eliminated candidate's candidatePiles
             S#58; STVElection->>B#58; Ballot: getCandidateRankings()
@@ -35,4 +36,5 @@ sequenceDiagram
     S#58; STVElection-->>Election Official: elected and non-elected lists
     deactivate S#58; STVElection
     deactivate Election Official
+
 
