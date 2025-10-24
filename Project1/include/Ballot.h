@@ -4,28 +4,53 @@
 #include <map>
 #include <string>
 
-class Ballot{
+/**
+ * @class Ballot
+ * @brief Represents the ballot of a single voter, including their ranked candidate preferences.
+ */
+class Ballot {
 
-    private:
-        
-        int id;
-        int preference;
-        std::map<std::string, int> candidateRankings;
+private:
 
+    int id;
+    int preference;
+    std::map<std::string, int> candidateRankings;
 
-    public:
+public:
 
-        Ballot(int newId, std::map<std::string, int> rankings) : id(newId), preference(0), candidateRankings(rankings) {}
+    /**
+     * @brief Constructor for a Ballot with an ID and candidate rankings.
+     * @param newId used to initialize the ballot ID.
+     * @param rankings A map associating candidate names with their ranking values.
+     * @note The initial preference is set to 0.
+     */
+    Ballot(int newId, std::map<std::string, int> rankings)
+        : id(newId), preference(0), candidateRankings(rankings) {}
 
-        int getId() { return id; }
+    /**
+     * @brief Retrieves the unique ballot ID.
+     * @return The ID of this ballot.
+     */
+    int getId() { return id; }
 
-        int getPreference() { return preference; }
+    /**
+     * @brief Retrieves the current preference value.
+     * @return The current preference of this ballot.
+     */
+    int getPreference() { return preference; }
 
-        //should always be increasing the current preference by 1
-        void setPreference(int newPreference){ preference = newPreference; }
+    /**
+     * @brief Updates the current preference value.
+     * @param newPreference which is set as preference.
+     * @note The new preference should always be one more than the previous value.
+     */
+    void setPreference(int newPreference) { preference = newPreference; }
 
-        std::map<std::string, int> getCandidateRankings() { return candidateRankings; }
-
+    /**
+     * @brief Retrieves the candidate ranking map.
+     * @return A map associating candidate names with their ranking values.
+     */
+    std::map<std::string, int> getCandidateRankings() { return candidateRankings; }
 };
 
 #endif /* BALLOT_H_ */
