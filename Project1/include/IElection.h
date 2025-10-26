@@ -28,8 +28,8 @@ class IElection{
      */
         virtual ~IElection() = default;
 
-        IElection(int nSeats, std::vector<Ballot> b, std::vector<Candidate> c)
-            : numSeats(nSeats), ballots(b), candidates(c), reportGenerator(new AuditReport()) {}
+        IElection(int nSeats) : numSeats(nSeats), ballotHandler(new BallotHandler()),
+            reportGenerator(new AuditReport()) {}
 
     protected:
 
