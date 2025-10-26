@@ -37,14 +37,14 @@ public:
      * @brief Retrieves the current preference value.
      * @return The current preference of this ballot.
      */
-    int getPreference() { return preference; }
+    std::string getPreference() { return preference; }
 
     /**
      * @brief Updates the current preference value.
      * @param newPreference which is set as preference.
      * @note The new preference should always be one more than the previous value.
      */
-    void setPreference(int newPreference) { preference = newPreference; }
+    void setPreference(std::string newPreference) { preference = newPreference; }
 
     /**
      * @brief Retrieves the candidate ranking map.
