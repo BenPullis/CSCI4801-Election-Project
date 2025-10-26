@@ -13,7 +13,7 @@ class Ballot {
 private:
 
     int id;
-    int preference;
+    std::string preference;
     std::map<std::string, int> candidateRankings;
 
 public:
