@@ -3,8 +3,8 @@
 
 #include <vector>
 #include "HelpWindow.h"
-#include "AuditReport.h"
-#include "BallotHandler.h"
+// #include "AuditReport.h"
+// #include "BallotHandler.h"
 #include "Ballot.h"
 #include "Candidate.h"
 
@@ -31,9 +31,9 @@ class IElection{
     protected:
 
         int numSeats;
-        HelpWindow *helpWindow;
-        AuditReport *reportGenerator;
-        BallotHandler *ballotHandler;
+        // HelpWindow *helpWindow;
+        // AuditReport *reportGenerator;
+        // BallotHandler *ballotHandler;
         std::vector<Ballot> ballots;
         std::vector<Candidate> candidates;
         std::vector<Candidate> winnersList;

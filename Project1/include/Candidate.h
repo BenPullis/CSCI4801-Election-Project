@@ -23,8 +23,10 @@ public:
      * @param party The candidate's political party.
      * @note FirstVote is initialized to -1, meaning the candidate has not yet received their first vote.
      */
-    Candidate(const std::string& name, const std::string& party)
-        : candidateName(name), candidateParty(party), firstVote(-1) {}
+    Candidate(const std::string& name, const std::string& party) : candidateName(name), candidateParty(party), firstVote(-1) {}
+
+    //Empty constructor for testing purposes.
+    Candidate(){}
 
     /**
      * @brief Retrieves the candidate's name.
