@@ -60,7 +60,9 @@ int main(){
         else{
             if(input == "STV" || input == "stv" || input == "Stv"){
                 cout << "Choose whether you would like to shuffle the ballots (Y/N): ";
-                election = new STVElection(numSeats, input == "Y" || "y");
+                string shuffleChoice;
+                cin >> shuffleChoice;
+                election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes");
                 break;
             }
             else if(input == "PLURALITY" || input == "plurality" || input == "Plurality"){
