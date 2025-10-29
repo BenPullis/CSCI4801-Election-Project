@@ -13,8 +13,8 @@ class Ballot {
 private:
 
     int id;
-    std::string preference;
-    std::map<std::string, int> candidateRankings;
+    int preference;
+    std::map<int, std::string> candidateRankings;
 
 public:
 
@@ -37,20 +37,20 @@ public:
      * @brief Retrieves the current preference value.
      * @return The current preference of this ballot.
      */
-    std::string getPreference() { return preference; }
+    int getPreference() { return preference; }
 
     /**
      * @brief Updates the current preference value.
      * @param newPreference which is set as preference.
      * @note The new preference should always be one more than the previous value.
      */
-    void setPreference(std::string newPreference) { preference = newPreference; }
+    void setPreference(int newPreference) { preference = newPreference; }
 
     /**
      * @brief Retrieves the candidate ranking map.
      * @return A map associating candidate names with their ranking values.
      */
-    std::map<std::string, int> getCandidateRankings() { return candidateRankings; }
+    std::map<int, std::string> getCandidateRankings() { return candidateRankings; }
 };
 
 #endif /* BALLOT_H_ */

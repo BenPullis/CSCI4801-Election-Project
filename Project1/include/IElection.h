@@ -28,18 +28,15 @@ class IElection{
      */
         virtual ~IElection() = default;
 
-        IElection(int nSeats) : numSeats(nSeats), ballotHandler(new BallotHandler()),
-            reportGenerator(new AuditReport()) {}
-
     protected:
 
         int numSeats;
         // HelpWindow *helpWindow;
         // AuditReport *reportGenerator;
         // BallotHandler *ballotHandler;
-        std::vector<Ballot> ballots;
-        std::vector<Candidate> candidates;
-        std::vector<Candidate> winnersList;
+        std::vector<Ballot *> ballots;
+        std::vector<Candidate *> candidates;
+        std::vector<Candidate *> winnersList;
 
     /**
      * @brief Pure virtual Function to fairly breaks a tie between 2+ Candidates.
@@ -47,7 +44,7 @@ class IElection{
      * @return The wining Candidate.
      * @note All child classes MUST override this function.
      */
-        virtual Candidate breakTie(const std::vector<Candidate>& tiedCandidates) = 0;
+        virtual Candidate *breakTie(const std::vector<Candidate *>& tiedCandidates) = 0;
 
     /**
      * @brief Retrieves the list of winners for an election.
