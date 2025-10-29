@@ -2,7 +2,6 @@
 #include "PluralityElection.h"
 #include "IElection.h"
 #include "HelpWindow.h"
-#include <algorithm>
 #include <string>
 #include <iostream>
 
