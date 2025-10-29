@@ -86,7 +86,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             }
         }
 
-        Ballot b(localId++, candidateRanking);
+        Ballot* b = new Ballot(localId++, candidateRanking);
         ballots.push_back(b);
     }
 
@@ -112,12 +112,12 @@ void BallotHandler::handleFiles() {
     }
 }
 
-std::vector<Ballot> BallotHandler::recieveBallots() {
+std::vector<Ballot*> BallotHandler::recieveBallots() {
     return ballots;
 }
 
-std::vector<Ballot> BallotHandler::shuffleBallots(const std::vector<Ballot>& ballots) {
-    std::vector<Ballot> shuffled = ballots;
+std::vector<Ballot*> BallotHandler::shuffleBallots(const std::vector<Ballot*>& ballots) {
+    std::vector<Ballot*> shuffled = ballots;
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(shuffled.begin(), shuffled.end(), g);
