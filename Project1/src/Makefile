@@ -16,3 +16,6 @@ $(BUILD_DIR)/%.o: %.cc
 $(EXE_DIR): $(OBJFILES)
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(OBJFILES) -o $@
+
+clean:
+	rm -rf $(BUILD_DIR)
