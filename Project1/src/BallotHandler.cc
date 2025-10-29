@@ -59,7 +59,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
     }  // For non-first files, skip header (assume consistent)
 
     // Read ballot lines
-    int localId = static_cast<int>(ballots.size()) + 1;  // Unique incremental ID starting from 1 overall
+    int localId = static_cast<int>(ballots.size()) + 1;
     while (std::getline(infile, line)) {
         line = trim(line);
         if (line.empty()) continue;
@@ -72,14 +72,14 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         }
 
         // Assume correct number of fields (as per requirements)
-        if (ranks.size() != candidates.size()) continue;  // Skip invalid, though assumed correct
+        if (ranks.size() != candidates.size()) continue;
 
-        std::map<std::string, int> candidateRanking;
+        std::map<int, std::string> candidateRanking;
         for (size_t i = 0; i < candidates.size(); ++i) {
             if (!ranks[i].empty()) {
                 try {
                     int rank = std::stoi(ranks[i]);
-                    candidateRanking[candidates[i].getName()] = rank;
+                    candidateRanking[rank] = candidates[i].getName();
                 } catch (const std::exception&) {
                     // Invalid rank, skip entry (assumed correct)
                 }
@@ -97,7 +97,7 @@ void BallotHandler::handleFiles() {
     int numFiles;
     std::cout << "Enter the number of ballot files: ";
     std::cin >> numFiles;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Clear input buffer
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     bool first = true;
     for (int i = 0; i < numFiles; ++i) {

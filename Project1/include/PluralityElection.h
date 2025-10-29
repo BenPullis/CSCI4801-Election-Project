@@ -8,7 +8,6 @@
 
 class PluralityElection : public IElection {
     public:
-<<<<<<< HEAD
 
         /**
          * @brief
@@ -17,13 +16,6 @@ class PluralityElection : public IElection {
 
     private:
 
-=======
-        void run() {}
-        PluralityElection(int nSeats) : IElection() { numSeats = nSeats; }
-
-    private:
-        Candidate *breakTie(const std::vector<Candidate *>& tiedCandidates) override { return new Candidate(); }
->>>>>>> origin/Ben-Dev
         std::map<std::string, int> candidateCounts;
 
         /**
@@ -32,7 +24,6 @@ class PluralityElection : public IElection {
          * @param
          */
         void setCandidateCounts(std::string candidatename, int ballotCount);
-<<<<<<< HEAD
 
         /**
          * @brief
@@ -41,6 +32,3 @@ class PluralityElection : public IElection {
 };
 
 #endif
-=======
-};
->>>>>>> origin/Ben-Dev
