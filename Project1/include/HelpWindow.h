@@ -1,19 +1,19 @@
-#ifndef HELPWINDOW_H
-#define HELPWINDOW_H
-
-#include <iostream>
 #include <string>
-
-//Temp HelpWindow to test main.
+#include <iostream>
 
 class HelpWindow {
-public:
-    void getHelp() {
-        std::cout << "\n--- Help Menu ---\n";
-        std::cout << "Enter a positive integer for the number of seats.\n";
-        std::cout << "Type 'help' to see this message again.\n";
-        std::cout << "-----------------\n\n";
-    }
-};
+    public:
+        static HelpWindow& getInstance();
 
-#endif
+        std::string getHelp();
+    private:
+        HelpWindow();
+
+        HelpWindow(HelpWindow const&);
+
+        void operator=(HelpWindow const&);
+    
+    public:
+        HelpWindow(HelpWindow const&) = delete;
+        void operator=(HelpWindow const&) = delete;
+};
