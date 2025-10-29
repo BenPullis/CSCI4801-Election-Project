@@ -1,6 +1,7 @@
 #ifndef STVELECTION_H_
 #define STVELECTION_H_
 
+#include <algorithm>
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -23,6 +24,6 @@ class STVElection : public IElection {
         int calculateDroopQuota();
         void updateCandidatePiles(int &numBallotsProcessed);
         Candidate *breakTie(const std::vector<Candidate *>& tiedCandidates) override;
-}
+};
 
 #endif /* STVELECTION_H_ */

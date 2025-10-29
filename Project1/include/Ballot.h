@@ -24,7 +24,7 @@ public:
      * @param rankings A map associating candidate names with their ranking values.
      * @note The initial preference is set to 0.
      */
-    Ballot(int newId, std::map<std::string, int> rankings)
+    Ballot(int newId, std::map<int, std::string> rankings)
         : id(newId), preference(0), candidateRankings(rankings) {}
 
     /**

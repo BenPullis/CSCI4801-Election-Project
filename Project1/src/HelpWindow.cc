@@ -1,4 +1,4 @@
-#include "./include/HelpWindow.h"
+#include "HelpWindow.h"
 
 HelpWindow& HelpWindow::getInstance(){
     static HelpWindow instance;

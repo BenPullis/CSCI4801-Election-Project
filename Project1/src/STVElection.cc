@@ -1,10 +1,11 @@
 #include "STVElection.h"
 
 STVElection::STVElection(int nSeats, bool sb) 
-    : numSeats(nSeats), shuffleBallots(sb)
+    : IElection(), shuffleBallots(sb)
 {
+    numSeats = nSeats;
     for (Candidate *candidate : candidates) {
-        candidatesPiles.insert({ candidate->getName(), 0 });
+        candidatePiles.insert({ candidate->getName(), 0 });
     }
 
     droopQuota = calculateDroopQuota();
@@ -12,7 +13,6 @@ STVElection::STVElection(int nSeats, bool sb)
 
 
 STVElection::~STVElection() {
-    delete helpWindow;
     delete reportGenerator;
     delete ballotHandler;
     for (Ballot *ballot : ballots) {
@@ -43,21 +43,6 @@ Candidate *STVElection::breakTie(const std::vector<Candidate *>& tiedCandidates)
 }
 
 
-void STVElection::run() {
-    if (shuffleBallots) {
-        ballots = ballotHandler->shuffleBallots(ballots);
-    }
-
-    int numBallotsProcessed = 0; // used to break ties when eliminating candidates
-
-    while (winnersList.size() < numSeats) {
-        updateCandidatePiles(numBallotsProcessed);
-    }
-
-    reportGenerator->generateReport(createAuditReportDetails(winnersList, losersList));
-}
-
-
 Candidate *findCandidateByName(std::string candidateName, const std::vector<Candidate *> candidates) {
     for (Candidate *candidate : candidates) {
         if (candidate->getName() == candidateName) {
@@ -69,61 +54,18 @@ Candidate *findCandidateByName(std::string candidateName, const std::vector<Cand
 
 
 std::vector<std::string> createAuditReportDetails(
-    std::vector<Candidate> winnersList,
-    std::vector<Candidate> losersList
+    std::vector<Candidate *> winnersList,
+    std::vector<Candidate *> losersList
 ) {
     return { "" };
 }
 
 
-void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
-    std::vector<std::string> candidatesToUpdate;
-
-    // process all ballots, increment candidate piles
-    for (Ballot *ballot : ballots) {
-        int ballotPref = ballot->get_preference();
-        int prefName = ballot->getCandidateRankings()[ballotPref];
-        Candidate *prefCandidate = findCandidateByName(prefName, candidates);
-
-        candidatePiles[prefName]++;
-        numBallotsProcessed++;
-
-        if (candidatePiles[prefName] == 1) {
-            // candidate's first vote has been received
-            prefCandidate->setFirstVote(numBallotsProcessed);
-        }
-
-        if (candidatePiles[prefName] == droopQuota) {
-            // add to winners list
-            addWinner(prefCandidate);
-            removeWinningBallots(ballots, prefName);
-            if (winnersList.size() == numSeats) break;
-            candidatesToUpdate.push_back(prefName);
-        }
-    }
-
-    if (winnersList.size() == numSeats) {
-        // winners have been determined. put remaining eligible candidates in losersList
-        for (Candidate *cand : candidates) {
-            if (findCandidateByName(cand->getName(), winnersList) == nullptr
-                && findCandidateByName(cand->getName(), losersList) == nullptr
-            ) {
-                addLoser(cand);
-            }
-        }
-        return;
-    }
-
-    if (candidatesToUpdate.size() == 0) {
-        std::string losingCandidateName = eliminateCandidate(ballots);
-        candidatesToUpdate.push_back(losingCandidateName);
-    }
-
-    updateBallotPreferences(candidatesToUpdate, ballots, winnersList, losersList, candidates.size());
-}
-
-
-std::string eliminateCandidate(const std::vector<Ballot *>& ballots) {
+std::vector<Candidate *> getTiedCandidates(
+    const std::vector<Ballot *>& ballots,
+    const std::unordered_map<std::string, int>& candidatePiles,
+    const std::vector<Candidate *>& candidates
+) {
     // find candidate with least num of votes
     int minCount = ballots.size() + 1;
     std::vector<Candidate *> tiedCands;
@@ -143,10 +85,7 @@ std::string eliminateCandidate(const std::vector<Ballot *>& ballots) {
         }
     } 
 
-    Candidate *losingCandidate = tiedCands.size() > 1 
-        ? breakTie(tiedCands) : tiedCands.at(0);
-    addLoser(losingCandidate);
-    return losingCandidate->getName();
+    return tiedCands;
 }
 
 
@@ -154,7 +93,7 @@ void updateBallotPreferences(
     std::vector<std::string> candidatesToUpdate,
     std::vector<Ballot *>& ballots,
     const std::vector<Candidate *>& winnersList,
-    const std::vector<Candidate *>& losersList
+    const std::vector<Candidate *>& losersList,
     int numCandidates
 ) {
     for (std::string candName : candidatesToUpdate) {
@@ -194,4 +133,69 @@ void removeWinningBallots(std::vector<Ballot *> &ballots, std::string winnerName
         ),
         ballots.end()
     );
+}
+
+
+void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
+    std::vector<std::string> candidatesToUpdate;
+
+    // process all ballots, increment candidate piles
+    for (Ballot *ballot : ballots) {
+        int ballotPref = ballot->getPreference();
+        std::string prefName = ballot->getCandidateRankings()[ballotPref];
+        Candidate *prefCandidate = findCandidateByName(prefName, candidates);
+
+        candidatePiles[prefName]++;
+        numBallotsProcessed++;
+
+        if (candidatePiles[prefName] == 1) {
+            // candidate's first vote has been received
+            prefCandidate->setFirstVote(numBallotsProcessed);
+        }
+
+        if (candidatePiles[prefName] == droopQuota) {
+            // add to winners list
+            addWinner(prefCandidate);
+            removeWinningBallots(ballots, prefName);
+            if (winnersList.size() == numSeats) break;
+            candidatesToUpdate.push_back(prefName);
+        }
+    }
+
+    if (winnersList.size() == numSeats) {
+        // winners have been determined. put remaining eligible candidates in losersList
+        for (Candidate *cand : candidates) {
+            if (findCandidateByName(cand->getName(), winnersList) == nullptr
+                && findCandidateByName(cand->getName(), losersList) == nullptr
+            ) {
+                addLoser(cand);
+            }
+        }
+        return;
+    }
+
+    if (candidatesToUpdate.size() == 0) {
+        std::vector<Candidate *> tiedCands = getTiedCandidates(ballots, candidatePiles, candidates);
+        Candidate *losingCandidate = tiedCands.size() > 1 
+            ? breakTie(tiedCands) : tiedCands.at(0);
+        addLoser(losingCandidate);
+        candidatesToUpdate.push_back(losingCandidate->getName());
+    }
+
+    updateBallotPreferences(candidatesToUpdate, ballots, winnersList, losersList, candidates.size());
+}
+
+
+void STVElection::run() {
+    if (shuffleBallots) {
+        ballotHandler->shuffleBallots(ballots);
+    }
+
+    int numBallotsProcessed = 0; // used to break ties when eliminating candidates
+
+    while (winnersList.size() < numSeats) {
+        updateCandidatePiles(numBallotsProcessed);
+    }
+
+    reportGenerator->generateReport(createAuditReportDetails(winnersList, losersList));
 }

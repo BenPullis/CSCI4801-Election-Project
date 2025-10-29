@@ -2,6 +2,7 @@
 #include "PluralityElection.h"
 #include "IElection.h"
 #include "HelpWindow.h"
+#include <algorithm>
 #include <string>
 #include <iostream>
 
@@ -9,7 +10,7 @@ using namespace std;
 
 int main(){
     
-    HelpWindow help;
+    HelpWindow &help = HelpWindow::getInstance();
 
     cout << "------------------------" << endl;
     cout << "Time To Run An Election!" << endl;
@@ -59,7 +60,8 @@ int main(){
         }
         else{
             if(input == "STV" || input == "stv" || input == "Stv"){
-                election = new STVElection(numSeats);
+                cout << "Choose whether you would like to shuffle the ballots (Y/N): ";
+                election = new STVElection(numSeats, input == "Y" || "y");
                 break;
             }
             else if(input == "PLURALITY" || input == "plurality" || input == "Plurality"){

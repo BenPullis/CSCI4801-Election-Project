@@ -7,13 +7,13 @@ class HelpWindow {
 
         std::string getHelp();
     private:
-        HelpWindow();
+        HelpWindow() = default;
 
-        HelpWindow(HelpWindow const&);
+        HelpWindow(HelpWindow const&) = default;
 
         void operator=(HelpWindow const&);
     
     public:
-        HelpWindow(HelpWindow const&) = delete;
-        void operator=(HelpWindow const&) = delete;
+        // HelpWindow(HelpWindow const&) = delete;
+        // void operator=(HelpWindow const&) = delete;
 };

@@ -2,9 +2,8 @@
 #define IELECTION_H_
 
 #include <vector>
-#include "HelpWindow.h"
-// #include "AuditReport.h"
-// #include "BallotHandler.h"
+#include "AuditReport.h"
+#include "BallotHandler.h"
 #include "Ballot.h"
 #include "Candidate.h"
 
@@ -31,9 +30,8 @@ class IElection{
     protected:
 
         int numSeats;
-        // HelpWindow *helpWindow;
-        // AuditReport *reportGenerator;
-        // BallotHandler *ballotHandler;
+        AuditReport *reportGenerator;
+        BallotHandler *ballotHandler;
         std::vector<Ballot *> ballots;
         std::vector<Candidate *> candidates;
         std::vector<Candidate *> winnersList;
@@ -50,13 +48,13 @@ class IElection{
      * @brief Retrieves the list of winners for an election.
      * @return A vector containing the winning Candidates.
      */
-        std::vector<Candidate> getWinnersList(){ return winnersList; }
+        std::vector<Candidate *> getWinnersList(){ return winnersList; }
 
     /**
      * @brief Adds a winner to the winners list.
      * @param c Which is the Candidate to be added to the vector of winners.
      */    
-        void addWinner(Candidate c){ winnersList.push_back(c); }
+        void addWinner(Candidate *c){ winnersList.push_back(c); }
 };
 
 #endif /* IELECTION_H_ */
