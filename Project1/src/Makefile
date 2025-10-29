@@ -17,13 +17,15 @@ $(EXE_DIR): $(OBJFILES)
 	mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(OBJFILES) -o $@
 
-test:
-	mkdir -p $(BUILD_DIR)/tests
-	$(CXX) $(CXXFLAGS) $(foreach inc, $(INCLUDES), -I$(inc)) -I$(INCLUDE_DIR) -I../testing \
-		$(filter-out $(BUILD_DIR)/./main.o, $(OBJFILES)) \
-		$(shell find ../testing -name '*.cc') \
-		-o $(BUILD_DIR)/tests/runTests -lgtest -lpthread
-	$(BUILD_DIR)/tests/runTests
+TEST_SOURCES = $(shell find ../testing -name '*.cc')
+TEST_BIN = ../test_bin
+OBJFILES_NO_MAIN = $(filter-out %main.o, $(OBJFILES))
+
+test: $(OBJFILES_NO_MAIN) $(TEST_SOURCES)
+	$(CXX) $(CXXFLAGS) $(foreach inc, $(INCLUDES), -I$(inc)) -I/usr/include/gtest \
+	$(TEST_SOURCES) $(OBJFILES_NO_MAIN) -lgtest -lgtest_main -lpthread -o $(TEST_BIN)
+	./$(TEST_BIN)
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm $(TEST_BIN)
