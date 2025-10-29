@@ -62,12 +62,11 @@ std::vector<std::string> createAuditReportDetails(
 
 
 std::vector<Candidate *> getTiedCandidates(
-    const std::vector<Ballot *>& ballots,
     const std::unordered_map<std::string, int>& candidatePiles,
     const std::vector<Candidate *>& candidates
 ) {
     // find candidate with least num of votes
-    int minCount = ballots.size() + 1;
+    int minCount = INT_MAX;
     std::vector<Candidate *> tiedCands;
 
     for (const auto& candidateCount : candidatePiles) {
@@ -175,7 +174,7 @@ void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
     }
 
     if (candidatesToUpdate.size() == 0) {
-        std::vector<Candidate *> tiedCands = getTiedCandidates(ballots, candidatePiles, candidates);
+        std::vector<Candidate *> tiedCands = getTiedCandidates(candidatePiles, candidates);
         Candidate *losingCandidate = tiedCands.size() > 1 
             ? breakTie(tiedCands) : tiedCands.at(0);
         addLoser(losingCandidate);
