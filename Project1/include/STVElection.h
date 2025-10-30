@@ -11,7 +11,8 @@
 
 class STVElection : public IElection {
     public:
-        STVElection(int nSeats, bool shuffleBallots);
+        STVElection(int nSeats, bool shuffleBallots,
+            std::vector<Ballot *> ballots, std::vector<Candidate *> candidates);
         ~STVElection();
         void run() override;
         void addLoser(Candidate *candidate) { losersList.push_back(candidate); }

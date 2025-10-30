@@ -1,8 +1,10 @@
 #include "STVElection.h"
 
-STVElection::STVElection(int nSeats, bool sb) 
+STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vector<Candidate *> c) 
     : IElection(), shuffleBallots(sb)
 {
+    ballots = b;
+    candidates = c;
     numSeats = nSeats;
     for (Candidate *candidate : candidates) {
         candidatePiles.insert({ candidate->getName(), 0 });

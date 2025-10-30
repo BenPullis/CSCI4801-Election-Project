@@ -62,7 +62,8 @@ int main(){
                 cout << "Choose whether you would like to shuffle the ballots (Y/N): ";
                 string shuffleChoice;
                 cin >> shuffleChoice;
-                election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes");
+                election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
+                    { new Ballot(0, {}) }, { new Candidate("Cand 1", "Party 1") });
                 break;
             }
             else if(input == "PLURALITY" || input == "plurality" || input == "Plurality"){
