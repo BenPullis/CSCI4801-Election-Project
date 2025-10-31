@@ -1,12 +1,13 @@
-#ifndef AUDITREPORT_H_
-#define AUDITREPORT_H_
+#ifndef AUDITREPORT_H
+#define AUDITREPORT_H
 
-#include <string>
 #include <vector>
+#include <string>
 
 class AuditReport {
-    public:
-        void generateReport(std::vector<std::string> reportDetails) {}
+public:
+    AuditReport();
+    void generateReport(const std::vector<std::string>& details);
 };
 
-#endif /* AUDITREPORT_H_ */
+#endif // AUDITREPORT_H

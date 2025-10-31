@@ -5,7 +5,6 @@ HelpWindow& HelpWindow::getInstance(){
     return instance;
 }
 
-std::string HelpWindow::getHelp(){
+void HelpWindow::getHelp(){
     std::cout << "help message\n";
-    return "hi";
 }

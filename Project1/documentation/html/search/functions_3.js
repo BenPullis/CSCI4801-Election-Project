@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['getcandidaterankings_0',['getCandidateRankings',['../classBallot.html#a1c98993ad080601d16412788d0fd34df',1,'Ballot']]],
+  ['getfirstvote_1',['getFirstVote',['../classCandidate.html#a982452ba6f8b0307138857f4f77f35ff',1,'Candidate']]],
+  ['getid_2',['getId',['../classBallot.html#a1ff11d3400230f4837fdec904d7e66fd',1,'Ballot']]],
+  ['getname_3',['getName',['../classCandidate.html#af862d92e21d66d74f1d5cae92937d3da',1,'Candidate']]],
+  ['getparty_4',['getParty',['../classCandidate.html#a459c7d0c4e5708ded61d1ad33182a1e3',1,'Candidate']]],
+  ['getpreference_5',['getPreference',['../classBallot.html#a3095eab2c315848468943708df8a0117',1,'Ballot']]],
+  ['getwinnerslist_6',['getWinnersList',['../classIElection.html#ad643667e47465deefd8380aac23fe6f5',1,'IElection']]]
+];
