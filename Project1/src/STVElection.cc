@@ -9,6 +9,8 @@ STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vecto
     for (Candidate *candidate : candidates) {
         candidatePiles.insert({ candidate->getName(), 0 });
     }
+    reportGenerator = new AuditReport();
+    ballotHandler = new BallotHandler();
 
     droopQuota = calculateDroopQuota();
 }
@@ -32,11 +34,12 @@ int STVElection::calculateDroopQuota() {
 
 
 Candidate *STVElection::breakTie(const std::vector<Candidate *>& tiedCandidates) {
-    int latestFirstVote = 0;
-    Candidate *candWithLatestFirstVote;
+    // choose the candidate with the latest (largest) firstVote value
+    int latestFirstVote = -1;
+    Candidate *candWithLatestFirstVote = nullptr;
     for (Candidate *cand : tiedCandidates) {
         int firstVote = cand->getFirstVote();
-        if (firstVote < latestFirstVote) {
+        if (firstVote > latestFirstVote) {
             candWithLatestFirstVote = cand;
             latestFirstVote = firstVote;
         }
@@ -104,7 +107,7 @@ void updateBallotPreferences(
 
             if (ballotRanking[preference] == candName) {
                 // need to update ballot's preference
-                for (int i = preference + 1; i < numCandidates + 1; i++) {
+                for (int i = preference + 1; i < numCandidates; i++) {
                     std::string nextPrefName = ballotRanking[i];
 
                     // check if the next preference is still eligible
@@ -157,7 +160,6 @@ void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
         if (candidatePiles[prefName] == droopQuota) {
             // add to winners list
             addWinner(prefCandidate);
-            removeWinningBallots(ballots, prefName);
             if (winnersList.size() == numSeats) break;
             candidatesToUpdate.push_back(prefName);
         }
