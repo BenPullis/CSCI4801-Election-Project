@@ -29,8 +29,3 @@ class STVElection : public IElection {
 };
 
 #endif /* STVELECTION_H_ */
-
-std::vector<Candidate *> getTiedCandidates(
-    const std::unordered_map<std::string, int>& candidatePiles,
-    const std::vector<Candidate *>& candidates
-);
