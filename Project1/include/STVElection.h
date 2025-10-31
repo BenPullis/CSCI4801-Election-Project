@@ -12,7 +12,7 @@
 class STVElection : public IElection {
     public:
         STVElection(int nSeats, bool shuffleBallots,
-            std::vector<Ballot *> ballots, std::vector<Candidate *> candidates);
+            std::vector<Ballot *> ballots, std::vector<Candidate *> candidates, BallotHandler *ballotHandler);
         ~STVElection();
         void run() override;
         void addLoser(Candidate *candidate) { losersList.push_back(candidate); }
@@ -22,6 +22,7 @@ class STVElection : public IElection {
         int droopQuota;
         bool shuffleBallots;
         std::vector<Candidate *> losersList;
+        BallotHandler *ballotHandler;
 
         int calculateDroopQuota();
         void updateCandidatePiles(int &numBallotsProcessed);

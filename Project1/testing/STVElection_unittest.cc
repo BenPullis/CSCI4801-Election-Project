@@ -61,7 +61,7 @@ bool areVectorsEqualIgnoreOrder(std::vector<T> a, std::vector<T> b) {
 class TestableSTVElection : public STVElection {
     public:
         TestableSTVElection(int nSeats, bool sb, std::vector<Ballot *> b, std::vector<Candidate *> c)
-            : STVElection(nSeats, sb, b, c)
+            : STVElection(nSeats, sb, b, c, new BallotHandler())
         {}
         std::vector<Candidate *> getWinners() { return getWinnersList(); }
 };

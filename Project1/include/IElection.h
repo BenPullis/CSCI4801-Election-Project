@@ -31,7 +31,6 @@ class IElection{
 
         int numSeats;
         AuditReport *reportGenerator;
-        BallotHandler *ballotHandler;
         std::vector<Ballot *> ballots;
         std::vector<Candidate *> candidates;
         std::vector<Candidate *> winnersList;

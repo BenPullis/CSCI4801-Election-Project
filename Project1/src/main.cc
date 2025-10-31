@@ -63,7 +63,7 @@ int main(){
                 string shuffleChoice;
                 cin >> shuffleChoice;
                 election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
-                    { new Ballot(0, {}) }, { new Candidate("Cand 1", "Party 1") });
+                    { new Ballot(0, {}) }, { new Candidate("Cand 1", "Party 1") }, new BallotHandler());
                 break;
             }
             else if(input == "PLURALITY" || input == "plurality" || input == "Plurality"){

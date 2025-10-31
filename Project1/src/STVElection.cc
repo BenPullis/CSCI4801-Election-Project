@@ -1,7 +1,7 @@
 #include "STVElection.h"
 
-STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vector<Candidate *> c) 
-    : IElection(), shuffleBallots(sb)
+STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vector<Candidate *> c, BallotHandler *bh) 
+    : IElection(), shuffleBallots(sb), ballotHandler(bh)
 {
     ballots = b;
     candidates = c;
@@ -10,7 +10,6 @@ STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vecto
         candidatePiles.insert({ candidate->getName(), 0 });
     }
     reportGenerator = new AuditReport();
-    ballotHandler = new BallotHandler();
 
     droopQuota = calculateDroopQuota();
 }
