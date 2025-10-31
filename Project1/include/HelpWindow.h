@@ -16,7 +16,6 @@ class HelpWindow {
         void getHelp();
 
     private:
-<<<<<<< HEAD
 
         /**
          * @brief
@@ -27,11 +26,6 @@ class HelpWindow {
          * @brief
          */
         HelpWindow(HelpWindow const&);
-=======
-        HelpWindow() = default;
-
-        HelpWindow(HelpWindow const&) = default;
->>>>>>> origin/Ben-Dev
 
         /**
          * @brief
@@ -39,22 +33,6 @@ class HelpWindow {
         void operator=(HelpWindow const&);
     
     public:
-<<<<<<< HEAD
-
-        /**
-         * @brief
-         * @param
-         */
-        HelpWindow(HelpWindow const&) = delete;
-
-        /**
-         * @brief
-         * @param
-         */
-        void operator=(HelpWindow const&) = delete;
-
-=======
         // HelpWindow(HelpWindow const&) = delete;
         // void operator=(HelpWindow const&) = delete;
->>>>>>> origin/Ben-Dev
 };

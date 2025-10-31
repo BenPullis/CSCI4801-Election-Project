@@ -4,6 +4,8 @@
 #include "HelpWindow.h"
 #include <string>
 #include <iostream>
+#include "Ballot.h"
+#include "Candidate.h"
 #include "BallotHandler.h"
 #include <vector>
 
