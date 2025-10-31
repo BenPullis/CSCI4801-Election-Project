@@ -4,6 +4,8 @@
 #include "HelpWindow.h"
 #include <string>
 #include <iostream>
+#include "BallotHandler.h"
+#include <vector>
 
 using namespace std;
 
@@ -48,6 +50,15 @@ int main(){
     cout << "Number of seats set to: " << numSeats << endl;
 
 
+
+    BallotHandler *bh = new BallotHandler();
+
+    bh->handleFiles();
+
+    vector<Ballot*> ballots = bh->recieveBallots();
+
+    vector<Candidate*> candidates = bh->getCandidates();
+
     cout << "Now Choose The Type Of Election You Would Like, 'STV', 'Plurality', Or 'Help' for Further Help: ";
     IElection *election;
 
@@ -63,11 +74,11 @@ int main(){
                 string shuffleChoice;
                 cin >> shuffleChoice;
                 election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
-                    { new Ballot(0, {}) }, { new Candidate("Cand 1", "Party 1") }, new BallotHandler());
+                    ballots, candidates, bh);
                 break;
             }
             else if(input == "PLURALITY" || input == "plurality" || input == "Plurality"){
-                election = new PluralityElection(numSeats);
+                election = new PluralityElection(numSeats, ballots, candidates);
                 break;
             }
             else{

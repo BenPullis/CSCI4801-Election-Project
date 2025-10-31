@@ -8,6 +8,7 @@
 #include <vector>
 #include "IElection.h"
 #include "Candidate.h"
+#include "BallotHandler.h"
 
 class STVElection : public IElection {
     public:

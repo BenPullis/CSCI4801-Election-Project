@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "AuditReport.h"
-#include "BallotHandler.h"
 #include "Ballot.h"
 #include "Candidate.h"
 

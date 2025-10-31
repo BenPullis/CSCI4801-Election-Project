@@ -110,6 +110,7 @@ void BallotHandler::handleFiles() {
         readFile(fileName, first);
         first = false;
     }
+
 }
 
 std::vector<Ballot*> BallotHandler::recieveBallots() {
