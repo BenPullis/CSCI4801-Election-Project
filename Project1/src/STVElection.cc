@@ -124,22 +124,6 @@ void updateBallotPreferences(
 }
 
 
-void removeWinningBallots(std::vector<Ballot *> &ballots, std::string winnerName) {
-    ballots.erase(
-        std::remove_if(
-            ballots.begin(),
-            ballots.end(),
-            [winnerName](Ballot *b) { 
-                std::map<int, std::string> ranking = b->getCandidateRankings();
-                int pref = b->getPreference();
-                return ranking[pref] == winnerName;
-            }
-        ),
-        ballots.end()
-    );
-}
-
-
 void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
     std::vector<std::string> candidatesToUpdate;
 
