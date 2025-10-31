@@ -140,7 +140,10 @@ void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
             prefCandidate->setFirstVote(numBallotsProcessed);
         }
 
-        if (candidatePiles[prefName] == droopQuota) {
+        if (candidatePiles[prefName] == droopQuota
+            && findCandidateByName(prefName, winnersList) == nullptr
+            && findCandidateByName(prefName, losersList) == nullptr
+        ) {
             // add to winners list
             addWinner(prefCandidate);
             if (winnersList.size() == numSeats) break;
