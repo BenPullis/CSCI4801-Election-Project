@@ -57,14 +57,6 @@ Candidate *findCandidateByName(std::string candidateName, const std::vector<Cand
 }
 
 
-std::vector<std::string> createAuditReportDetails(
-    std::vector<Candidate *> winnersList,
-    std::vector<Candidate *> losersList
-) {
-    return { "" };
-}
-
-
 std::vector<Candidate *> getTiedCandidates(
     const std::unordered_map<std::string, int>& candidatePiles,
     const std::vector<Candidate *>& candidates
@@ -175,16 +167,66 @@ void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
 }
 
 
+std::vector<std::string> createAuditReportDetails(const std::vector<Candidate *>& candidates, int numSeats) {
+    // build a human-readable local datetime string for the audit report
+    std::time_t now = std::time(nullptr);
+    char dateBuf[100];
+    std::strftime(dateBuf, sizeof(dateBuf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    std::string dateStr(dateBuf);
+
+    std::string candidatesStr = "";
+    for (Candidate *cand : candidates) {
+        candidatesStr += std::format("{:s} ({:s}), ", cand->getName(), cand->getParty());
+    }
+    // remove last comma and space
+    candidatesStr.erase(candidatesStr.length() - 2);
+
+    return {
+        "Election Type: STV",
+        "Election Date: " + dateStr,
+        "Candidates: " + candidatesStr,
+        "Number of Candidates: " + std::to_string(candidates.size()),
+        "Number of Seats: " + std::to_string(numSeats)
+    };
+}
+
+std::string createCandidatesListString(const std::vector<Candidate *>& candidates) {
+    std::string candidatesListStr = "";
+    for (Candidate *candidate : candidates) {
+        candidatesListStr += candidate->getName() + ", ";
+    }
+    // remove last comma and space
+    candidatesListStr.erase(candidatesListStr.length() - 2);
+    return candidatesListStr;
+}
+
+
 void STVElection::run() {
     if (shuffleBallots) {
         ballotHandler->shuffleBallots(ballots);
     }
 
     int numBallotsProcessed = 0; // used to break ties when eliminating candidates
+    int algorithmPassNum = 0;
+
+    std::vector<std::string> auditReportDetails = createAuditReportDetails(candidates, numSeats);
 
     while (winnersList.size() < numSeats) {
         updateCandidatePiles(numBallotsProcessed);
+
+        // update audit report details string
+        for (Ballot *ballot : ballots) {
+            auditReportDetails.push_back(std::format(
+                "Ballot ID {:d} preference after pass #{:d}: {:s}", 
+                ballot->getId(), 
+                ++algorithmPassNum, 
+                ballot->getCandidateRankings()[ballot->getPreference()]
+            ));
+        }
     }
 
-    reportGenerator->generateReport(createAuditReportDetails(winnersList, losersList));
+    // winners and losers have been declared
+    auditReportDetails.push_back("Elected Candidates: " + createCandidatesListString(winnersList));
+    auditReportDetails.push_back("Non-Elected Candidates: " + createCandidatesListString(losersList));
+    reportGenerator->generateReport(auditReportDetails);
 }
