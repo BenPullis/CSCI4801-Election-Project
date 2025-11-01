@@ -111,7 +111,7 @@ TEST_F(STVElectionTest, GetTiedCandidatesTest) {
 }
 
 
-TEST(UpdateBallotPreferencesTest, AdvancesPreferencePastLosers) {
+TEST(UpdateBallotPreferencesTest, UpdateBallotPreferencesTest) {
     Ballot *b = new Ballot(0, {{0, "A"}, {1, "B"}, {2, "C"}});
     std::vector<Ballot *> ballots = { b };
     Candidate *candB = new Candidate("B", "P");
@@ -126,27 +126,10 @@ TEST(UpdateBallotPreferencesTest, AdvancesPreferencePastLosers) {
 
     delete b;
     delete candB;
-}
 
-TEST(FindCandidateByNameTest, FindsByNameOrReturnsNull) {
-    Candidate *c1 = new Candidate("X", "P");
-    Candidate *c2 = new Candidate("Y", "P");
-    std::vector<Candidate *> list = { c1, c2 };
-
-    Candidate *found = findCandidateByName("X", list);
-    ASSERT_EQ(c1, found);
-
-    Candidate *notFound = findCandidateByName("Z", list);
-    EXPECT_EQ(nullptr, notFound);
-
-    delete c1; delete c2;
-}
-
-
-TEST(UpdateBallotPreferencesTest, SkipsWinnersAndLosersCorrectly) {
-    Ballot *b = new Ballot(0, {{0, "A"}, {1, "B"}, {2, "C"}});
-    std::vector<Ballot *> ballots = { b };
-    Candidate *candB = new Candidate("B", "P");
+    b = new Ballot(0, {{0, "A"}, {1, "B"}, {2, "C"}});
+    ballots = { b };
+    candB = new Candidate("B", "P");
     Candidate *candC = new Candidate("C", "P");
 
     // if B is a winner, move to C
@@ -172,6 +155,21 @@ TEST(UpdateBallotPreferencesTest, SkipsWinnersAndLosersCorrectly) {
 
     delete b; delete candB; delete candC;
 }
+
+TEST(FindCandidateByNameTest, FindsByNameOrReturnsNull) {
+    Candidate *c1 = new Candidate("X", "P");
+    Candidate *c2 = new Candidate("Y", "P");
+    std::vector<Candidate *> list = { c1, c2 };
+
+    Candidate *found = findCandidateByName("X", list);
+    ASSERT_EQ(c1, found);
+
+    Candidate *notFound = findCandidateByName("Z", list);
+    EXPECT_EQ(nullptr, notFound);
+
+    delete c1; delete c2;
+}
+
 
 TEST(STVElectionRunIntegrationTest, ExpandedScenarios) {
     Candidate *c1 = new Candidate("Cand 1", "P1");
