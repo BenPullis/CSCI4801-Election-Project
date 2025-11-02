@@ -17,6 +17,13 @@ STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vecto
 
 STVElection::~STVElection() {
     delete reportGenerator;
+    delete ballotHandler;
+    for (Ballot *ballot : ballots) {
+        delete ballot;
+    }
+    for (Candidate *cand : candidates) {
+        delete cand;
+    }
 }
 
 
@@ -40,6 +47,12 @@ Candidate *STVElection::breakTie(const std::vector<Candidate *>& tiedCandidates)
 }
 
 
+/**
+ * @brief Retrieves a candidate pointer by name from a supplied list.
+ * @param candidateName Name of the candidate being searched for.
+ * @param candidates Collection of candidate pointers to scan.
+ * @returns Matching candidate pointer or nullptr when not found.
+ */
 Candidate *findCandidateByName(std::string candidateName, const std::vector<Candidate *> candidates) {
     for (Candidate *candidate : candidates) {
         if (candidate->getName() == candidateName) {
@@ -50,6 +63,12 @@ Candidate *findCandidateByName(std::string candidateName, const std::vector<Cand
 }
 
 
+/**
+ * @brief Builds the set of candidates currently tied at the minimum vote count.
+ * @param candidatePiles Map of candidate names to their current ballot counts.
+ * @param candidates All active candidates in the contest.
+ * @returns Vector of candidate pointers sharing the minimum vote total.
+ */
 std::vector<Candidate *> getTiedCandidates(
     const std::unordered_map<std::string, int>& candidatePiles,
     const std::vector<Candidate *>& candidates
@@ -77,6 +96,14 @@ std::vector<Candidate *> getTiedCandidates(
 }
 
 
+/**
+ * @brief Advances ballots to the next valid preference after winner or loser changes.
+ * @param candidatesToUpdate Candidate names whose ballots should be advanced.
+ * @param ballots All ballots being processed.
+ * @param winnersList Candidates already elected.
+ * @param losersList Candidates already eliminated.
+ * @param numCandidates Total number of candidates in the election.
+ */
 void updateBallotPreferences(
     std::vector<std::string> candidatesToUpdate,
     std::vector<Ballot *>& ballots,
@@ -160,6 +187,12 @@ void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
 }
 
 
+/**
+ * @brief Generates the static portion of the audit report metadata.
+ * @param candidates All candidates participating in the election.
+ * @param numSeats Number of seats allocated for this race.
+ * @returns Vector of formatted strings describing election metadata.
+ */
 std::vector<std::string> createAuditReportDetails(const std::vector<Candidate *>& candidates, int numSeats) {
     // build a human-readable local datetime string for the audit report
     std::time_t now = std::time(nullptr);
@@ -183,6 +216,11 @@ std::vector<std::string> createAuditReportDetails(const std::vector<Candidate *>
     };
 }
 
+/**
+ * @brief Formats a comma-separated list of candidate names for reporting.
+ * @param candidates Candidate pointers to include in the list.
+ * @returns Comma-separated name string with trailing whitespace removed.
+ */
 std::string createCandidatesListString(const std::vector<Candidate *>& candidates) {
     std::string candidatesListStr = "";
     for (Candidate *candidate : candidates) {
