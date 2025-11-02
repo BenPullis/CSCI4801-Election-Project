@@ -49,7 +49,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             pos = close + 1;
             if (pos < line.length() && line[pos] == ',') pos++;
 
-            candidates.emplace_back(name, party);
+            candidates.push_back(new Candidate(name, party));
         }
         if (candidates.empty()) {
             std::cerr << "Error: No candidates found in header of '" << fileName << "'." << std::endl;
@@ -79,7 +79,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             if (!ranks[i].empty()) {
                 try {
                     int rank = std::stoi(ranks[i]);
-                    candidateRanking[rank] = candidates[i].getName();
+                    candidateRanking[rank] = candidates[i]->getName();
                 } catch (const std::exception&) {
                     // Invalid rank, skip entry (assumed correct)
                 }
@@ -110,7 +110,6 @@ void BallotHandler::handleFiles() {
         readFile(fileName, first);
         first = false;
     }
-
 }
 
 std::vector<Ballot*> BallotHandler::recieveBallots() {
@@ -125,6 +124,6 @@ std::vector<Ballot*> BallotHandler::shuffleBallots(const std::vector<Ballot*>& b
     return shuffled;
 }
 
-std::vector<Candidate> BallotHandler::getCandidates() const {
+std::vector<Candidate*> BallotHandler::getCandidates() const {
     return candidates;
 }
