@@ -4,6 +4,7 @@ PluralityElection::PluralityElection(int nSeats, std::vector<Ballot *>b, std::ve
     numSeats = nSeats;
     ballots = b;
     candidates = c;
+    reportGenerator = new AuditReport();
 }
 
 void PluralityElection::setCandidateCounts(std::string candidateName, int ballotCount){
@@ -12,12 +13,6 @@ void PluralityElection::setCandidateCounts(std::string candidateName, int ballot
 
 PluralityElection::~PluralityElection(){
     delete reportGenerator;
-    for (Ballot *ballot : ballots) {
-        delete ballot;
-    }
-    for (Candidate *cand : candidates) {
-        delete cand;
-    }
 }
 
 Candidate *findCandidateViaName(std::string candidateName, const std::vector<Candidate *> candidates) {

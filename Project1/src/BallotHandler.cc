@@ -112,7 +112,7 @@ void BallotHandler::handleFiles() {
     }
 }
 
-std::vector<Ballot*> BallotHandler::recieveBallots() {
+std::vector<Ballot*> BallotHandler::receiveBallots() {
     return ballots;
 }
 
@@ -126,4 +126,9 @@ std::vector<Ballot*> BallotHandler::shuffleBallots(const std::vector<Ballot*>& b
 
 std::vector<Candidate*> BallotHandler::getCandidates() const {
     return candidates;
+}
+
+BallotHandler::~BallotHandler() {
+    for (auto b : ballots) delete b;
+    for (auto c : candidates) delete c;
 }

@@ -17,13 +17,6 @@ STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vecto
 
 STVElection::~STVElection() {
     delete reportGenerator;
-    delete ballotHandler;
-    for (Ballot *ballot : ballots) {
-        delete ballot;
-    }
-    for (Candidate *cand : candidates) {
-        delete cand;
-    }
 }
 
 
@@ -203,7 +196,7 @@ std::string createCandidatesListString(const std::vector<Candidate *>& candidate
 
 void STVElection::run() {
     if (shuffleBallots) {
-        ballotHandler->shuffleBallots(ballots);
+        ballots = ballotHandler->shuffleBallots(ballots);
     }
 
     int numBallotsProcessed = 0; // used to break ties when eliminating candidates
