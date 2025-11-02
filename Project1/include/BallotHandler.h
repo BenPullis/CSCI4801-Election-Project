@@ -19,7 +19,7 @@ public:
     void handleFiles();
     std::vector<Ballot*> recieveBallots();
     std::vector<Ballot*> shuffleBallots(const std::vector<Ballot*>& ballots);
-    std::vector<Candidate> getCandidates() const;
+    std::vector<Candidate*> getCandidates() const;
 };
 
 #endif // BALLOTHANDLER_H
