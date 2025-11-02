@@ -57,7 +57,7 @@ int main(){
 
     bh->handleFiles();
 
-    vector<Ballot*> ballots = bh->receiveBallots();
+    vector<Ballot*> ballots = bh->recieveBallots();
 
     vector<Candidate*> candidates = bh->getCandidates();
 
