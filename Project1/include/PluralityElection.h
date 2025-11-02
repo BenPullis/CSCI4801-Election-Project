@@ -13,7 +13,7 @@
 class PluralityElection : public IElection {
     public:
 
-        PluralityElection(int nSeats);
+        PluralityElection(int nSeats, std::vector<Ballot *>b, std::vector<Candidate *> c);
 
         ~PluralityElection();
 
@@ -40,6 +40,7 @@ class PluralityElection : public IElection {
          * @return A randomly selected candidate of type Candidate.
          */
         Candidate *breakTie(const std::vector<Candidate *>& tiedCandidates) override;
+
 };
 
 #endif

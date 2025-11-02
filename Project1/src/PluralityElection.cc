@@ -1,7 +1,9 @@
 #include "PluralityElection.h"
 
-PluralityElection::PluralityElection(int nSeats) : IElection() {
+PluralityElection::PluralityElection(int nSeats, std::vector<Ballot *>b, std::vector<Candidate *> c) : IElection() {
     numSeats = nSeats;
+    ballots = b;
+    candidates = c;
 }
 
 void PluralityElection::setCandidateCounts(std::string candidateName, int ballotCount){
