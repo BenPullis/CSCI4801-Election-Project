@@ -45,6 +45,12 @@ class STVElection : public IElection {
          */
         void addLoser(Candidate *candidate) { losersList.push_back(candidate); }
 
+        /**
+         * @brief Retrieves the list of losers for the election.
+         * @return A vector containing the losing Candidates.
+         */
+        std::vector<Candidate *> getLosersList() { return losersList; }
+
     private:
         std::unordered_map<std::string, int> candidatePiles;
         int droopQuota;
