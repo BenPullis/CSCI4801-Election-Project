@@ -23,12 +23,12 @@ class HelpWindow {
         HelpWindow();
 
         /**
-         * @brief 
+         * @brief Copy override to ensure validity of Singleton.
          */
         HelpWindow(HelpWindow const&);
 
         /**
-         * @brief
+         * @brief Assignment override to ensure validity of Singleton.
          */
         void operator=(HelpWindow const&);
 };

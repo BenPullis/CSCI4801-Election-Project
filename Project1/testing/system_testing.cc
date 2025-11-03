@@ -6,6 +6,10 @@
 #include "HelpWindow.h"
 #include "PluralityElection.h"
 #include "STVElection.h"
+#include <filesystem>
+#include <fstream>
+#include <string>
+#include <vector>
 
 class TestableSTVElection : public STVElection {
     public:
@@ -54,6 +58,237 @@ TEST(STVSystemTest, STVRunThrough) {
     EXPECT_EQ("Alice", winners[0]->getName());
 }
 
-TEST(PluralitySystemTest, PluralityRunThrough) {
 
+// Full plurality system test hitting every component of the system
+// > HelpWindow
+// > BallotHandler (by extenson Ballot and Candidate)
+// > PluralityElection
+// > AuditReport
+TEST(PluralitySystemTest, PluralityRunThrough) {
+    // Test out the Help Window.
+    std::string fake_input_data = "1\nok\nexit\n";
+    std::istringstream fake_input(fake_input_data);
+
+    std::streambuf* old_cin = std::cin.rdbuf();
+    std::streambuf* old_cout = std::cout.rdbuf();
+
+    std::cin.rdbuf(fake_input.rdbuf());
+
+    std::ostringstream captured_output;
+    std::cout.rdbuf(captured_output.rdbuf());
+
+    HelpWindow& help = HelpWindow::getInstance();
+    help.getHelp();
+
+    ASSERT_NO_FATAL_FAILURE(HelpWindow::getInstance());
+
+    std::cin.rdbuf(old_cin);
+    std::cout.rdbuf(old_cout);
+
+    std::string output = captured_output.str();
+
+    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+
+    BallotHandler handler;
+
+    // Simulate user entering file info via stdin
+    auto cinbuf = std::cin.rdbuf();
+    std::istringstream input("2\n../testing/ballots1.csv\n../testing/ballots2.csv\n");
+    std::cin.rdbuf(input.rdbuf());
+
+    handler.handleFiles();
+
+    std::cin.rdbuf(cinbuf);
+
+    // Verify candidates
+    auto candidates = handler.getCandidates();
+    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots1.csv header.";
+    EXPECT_EQ(candidates[0]->getName(), "Alice");
+    EXPECT_EQ(candidates[1]->getName(), "Bob");
+    EXPECT_EQ(candidates[2]->getName(), "Charlie");
+
+    // Verify ballots (2 from first file, 1 from second)
+    auto ballots = handler.receiveBallots();
+    EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
+
+    // Run a Plurality Election based off of the previously created ballots and candidates.
+    TestablePluralityElection election(1, ballots, candidates);
+
+    election.run();
+
+    std::vector<Candidate*> winners = election.getWinners();
+
+    ASSERT_EQ(winners.size(), 1) << "Expected exactly one winner.";
+    EXPECT_EQ(winners[0]->getName(), "Alice") << "Expected Alice to win with 2 votes.";
+
+    // Check to see if audit report exists.
+    EXPECT_TRUE(std::filesystem::exists("audit_report.txt")) << "Verify audit report was generated.";
+    std::ifstream infile("audit_report.txt");
+    ASSERT_TRUE(infile.is_open()) << "Unable to open audit_report.txt for reading.";
+
+    std::string content((std::istreambuf_iterator<char>(infile)),
+                         std::istreambuf_iterator<char>());
+    infile.close();
+
+    // Ensure correct contents written to audit report.
+    EXPECT_NE(content.find("Election"), std::string::npos)
+        << "Missing 'Election' header.";
+    EXPECT_NE(content.find("Date of the election:"), std::string::npos)
+        << "Missing 'Date of the election:' header.";
+    EXPECT_NE(content.find("Elected Candidates: Alice"), std::string::npos)
+        << "Missing the correct elected candidate";
+}
+
+// Full plurality system test WITH multiple candidates.
+TEST(PluralitySystemTest, MultipleCandidatesPlurality) {
+    // Test out the Help Window.
+    std::string fake_input_data = "1\nok\nexit\n";
+    std::istringstream fake_input(fake_input_data);
+
+    std::streambuf* old_cin = std::cin.rdbuf();
+    std::streambuf* old_cout = std::cout.rdbuf();
+
+    std::cin.rdbuf(fake_input.rdbuf());
+
+    std::ostringstream captured_output;
+    std::cout.rdbuf(captured_output.rdbuf());
+
+    HelpWindow& help = HelpWindow::getInstance();
+    help.getHelp();
+
+    ASSERT_NO_FATAL_FAILURE(HelpWindow::getInstance());
+
+    std::cin.rdbuf(old_cin);
+    std::cout.rdbuf(old_cout);
+
+    std::string output = captured_output.str();
+
+    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+
+    BallotHandler handler;
+
+    // Simulate user entering file info via stdin
+    auto cinbuf = std::cin.rdbuf();
+    std::istringstream input("2\n../testing/ballots1.csv\n../testing/ballots2.csv\n");
+    std::cin.rdbuf(input.rdbuf());
+
+    handler.handleFiles();
+
+    std::cin.rdbuf(cinbuf);
+
+    // Verify candidates
+    auto candidates = handler.getCandidates();
+    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots1.csv header.";
+    EXPECT_EQ(candidates[0]->getName(), "Alice");
+    EXPECT_EQ(candidates[1]->getName(), "Bob");
+    EXPECT_EQ(candidates[2]->getName(), "Charlie");
+
+    // Verify ballots (2 from first file, 1 from second)
+    auto ballots = handler.receiveBallots();
+    EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
+
+    // Run a Plurality Election based off of the previously created ballots and candidates.
+    TestablePluralityElection election(2, ballots, candidates);
+
+    election.run();
+
+    std::vector<Candidate*> winners = election.getWinners();
+
+    ASSERT_EQ(winners.size(), 2) << "Expected exactly one winner.";
+    EXPECT_EQ(winners[0]->getName(), "Alice") << "Expected Alice to win with 2 votes.";
+    EXPECT_EQ(winners[1]->getName(), "Bob") << "Expected Alice to win with 1 vote.";
+
+
+    // Check to see if audit report exists.
+    EXPECT_TRUE(std::filesystem::exists("audit_report.txt")) << "Verify audit report was generated.";
+    std::ifstream infile("audit_report.txt");
+    ASSERT_TRUE(infile.is_open()) << "Unable to open audit_report.txt for reading.";
+
+    std::string content((std::istreambuf_iterator<char>(infile)),
+                         std::istreambuf_iterator<char>());
+    infile.close();
+
+    // Ensure correct contents written to audit report.
+    EXPECT_NE(content.find("Election"), std::string::npos)
+        << "Missing 'Election' header.";
+    EXPECT_NE(content.find("Date of the election:"), std::string::npos)
+        << "Missing 'Date of the election:' header.";
+    EXPECT_NE(content.find("Elected Candidates: Alice, Bob"), std::string::npos)
+        << "Missing the correct elected candidates";
+}
+
+// Full plurality system test WITH tied candidates.
+TEST(PluralitySystemTest, PluralityTie) {
+    // Test out the Help Window.
+    std::string fake_input_data = "1\nok\nexit\n";
+    std::istringstream fake_input(fake_input_data);
+
+    std::streambuf* old_cin = std::cin.rdbuf();
+    std::streambuf* old_cout = std::cout.rdbuf();
+
+    std::cin.rdbuf(fake_input.rdbuf());
+
+    std::ostringstream captured_output;
+    std::cout.rdbuf(captured_output.rdbuf());
+
+    HelpWindow& help = HelpWindow::getInstance();
+    help.getHelp();
+
+    ASSERT_NO_FATAL_FAILURE(HelpWindow::getInstance());
+
+    std::cin.rdbuf(old_cin);
+    std::cout.rdbuf(old_cout);
+
+    std::string output = captured_output.str();
+
+    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+
+    BallotHandler handler;
+
+    // Simulate user entering file info via stdin
+    auto cinbuf = std::cin.rdbuf();
+    std::istringstream input("1\n../testing/ballots1.csv\n");
+    std::cin.rdbuf(input.rdbuf());
+
+    handler.handleFiles();
+
+    std::cin.rdbuf(cinbuf);
+
+    // Verify candidates
+    auto candidates = handler.getCandidates();
+    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots1.csv header.";
+    EXPECT_EQ(candidates[0]->getName(), "Alice");
+    EXPECT_EQ(candidates[1]->getName(), "Bob");
+    EXPECT_EQ(candidates[2]->getName(), "Charlie");
+
+    // Verify ballots (2 from first file)
+    auto ballots = handler.receiveBallots();
+    EXPECT_EQ(ballots.size(), 2) << "Expected 2 total ballots.";
+
+    // Run a Plurality Election based off of the previously created ballots and candidates.
+    TestablePluralityElection election(1, ballots, candidates);
+
+    election.run();
+
+    std::vector<Candidate*> winners = election.getWinners();
+
+    ASSERT_EQ(winners.size(), 1) << "Expected exactly one winner.";
+    EXPECT_TRUE(winners[0]->getName() == "Alice" || winners[0]->getName() == "Bob") << "Expected Alice OR Bob to win with 1 vote.";
+
+    // Check to see if audit report exists.
+    EXPECT_TRUE(std::filesystem::exists("audit_report.txt")) << "Verify audit report was generated.";
+    std::ifstream infile("audit_report.txt");
+    ASSERT_TRUE(infile.is_open()) << "Unable to open audit_report.txt for reading.";
+
+    std::string content((std::istreambuf_iterator<char>(infile)),
+                         std::istreambuf_iterator<char>());
+    infile.close();
+
+    // Ensure correct contents written to audit report.
+    EXPECT_NE(content.find("Election"), std::string::npos)
+        << "Missing 'Election' header.";
+    EXPECT_NE(content.find("Date of the election:"), std::string::npos)
+        << "Missing 'Date of the election:' header.";
+    EXPECT_FALSE(content.find("Elected Candidates: Alice") == std::string::npos && content.find("Elected Candidates: Bob") == std::string::npos)
+        << "Missing the correct elected candidates";
 }

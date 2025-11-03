@@ -1,13 +1,9 @@
 Election
-Date of the election: 2025-11-2
+Date of the election: 2025-11-3
 
-Election Type: STV
-Election Date: 2025-11-02 22:50:11
-Candidates: Alice (PartyA), Bob (PartyB), Charlie (PartyC)
+Election Type: Plurality
+Election Date: 2025-11-03 11:13:25
+Candidates: John Pork (TikTok Party), Tim Cheese (Reels Party), Marvin Beak (Shorts Party)
 Number of Candidates: 3
 Number of Seats: 1
-Ballot ID 1 preference after pass #1: Alice
-Ballot ID 2 preference after pass #1: Bob
-Ballot ID 3 preference after pass #1: Alice
-Elected Candidates: Alice
-Non-Elected Candidates: Bob, Charlie
+Elected Candidates: John Pork

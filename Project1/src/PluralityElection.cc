@@ -75,7 +75,6 @@ std::string createCandidatesListStr(const std::vector<Candidate *>& candidates) 
 }
 
 void PluralityElection::run(){
-
     // handling ballot stuff
     for (Ballot *ballot : ballots) {
         std::map<int, std::string> candidateRankings = ballot->getCandidateRankings();

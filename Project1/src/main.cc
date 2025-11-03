@@ -85,6 +85,7 @@ int main(){
             }
             else{
                 cout << "Invalid Input, Please Try Again: ";
+                break;
             }
         }
     }
