@@ -81,7 +81,6 @@ int main(){
             }
             else if(input == "PLURALITY" || input == "plurality" || input == "Plurality"){
                 election = new PluralityElection(numSeats, ballots, candidates);
-                delete(bh);
                 break;
             }
             else{
@@ -92,6 +91,7 @@ int main(){
 
     election->run();
 
+    delete(bh);
     delete(election);
 
     return 0;

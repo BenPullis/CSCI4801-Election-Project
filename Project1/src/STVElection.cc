@@ -17,7 +17,6 @@ STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vecto
 
 STVElection::~STVElection() {
     delete reportGenerator;
-    delete ballotHandler;
     for (Ballot *ballot : ballots) {
         delete ballot;
     }
