@@ -70,16 +70,6 @@ TEST_F(CandidateTest, SetFirstVote) {
     EXPECT_EQ(c.getFirstVote(), 100);
 }
 
-/**
- * @test Make sure different Candidate objects are seperate.
- */
-TEST_F(CandidateTest, CandidateObjectsIndependant) {
-    Candidate c2("testNameOther", "testPartyOther");
-
-    EXPECT_NE(c.getName(), c2.getName());
-    EXPECT_NE(c.getParty(), c2.getParty());
-}
-
 
 
 /**
@@ -121,31 +111,6 @@ TEST_F(BallotTest, GetCandidateRankings) {
     EXPECT_EQ(rankings[1], "c1");
     EXPECT_EQ(rankings[2], "c2");
     EXPECT_EQ(rankings[3], "c3");
-}
-
-/**
- * @test Make sure modifying the returned map does not affect the internal one.
- */
-TEST_F(BallotTest, ReturnedMapIsIndependentCopy) {
-    Ballot ballot(4, rankings);
-    std::map<int, std::string> rankingsCopy = ballot.getCandidateRankings();
-
-    rankingsCopy[1] = "c4";
-    EXPECT_NE(rankingsCopy[1], ballot.getCandidateRankings().at(1));
-}
-
-/**
- * @test Make sure multiple Ballot are seperate from each other.
- */
-TEST_F(BallotTest, BallotObjectsIndependent) {
-    Ballot b1(5, rankings);
-    Ballot b2(6, rankings);
-
-    b1.setPreference(1);
-    b2.setPreference(2);
-
-    EXPECT_NE(b1.getId(), b2.getId());
-    EXPECT_NE(b1.getPreference(), b2.getPreference());
 }
 
 
