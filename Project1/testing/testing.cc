@@ -113,6 +113,15 @@ TEST_F(BallotTest, GetCandidateRankings) {
     EXPECT_EQ(rankings[3], "c3");
 }
 
+/**
+ * @test Make sure getId returns correct id.
+ */
+TEST_F(BallotTest, GetId) {
+    Ballot ballot(4, rankings);
+
+    EXPECT_EQ(ballot.getId(), 4);
+}
+
 
 
 int main(int argc, char **argv) {
