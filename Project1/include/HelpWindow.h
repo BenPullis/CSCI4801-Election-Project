@@ -5,25 +5,25 @@ class HelpWindow {
     public:
 
         /**
-         * @brief
-         * @return
+         * @brief Fetches the singleton instance of the HelpWindow.
+         * @return A reference to the HelpWindow Singleton.
          */
         static HelpWindow& getInstance();
 
         /**
-         * @brief
+         * @brief Prints out the help window.
          */
         void getHelp();
 
     private:
 
         /**
-         * @brief
+         * @brief Constructor method for the help window.
          */
         HelpWindow();
 
         /**
-         * @brief
+         * @brief 
          */
         HelpWindow(HelpWindow const&);
 
@@ -31,8 +31,4 @@ class HelpWindow {
          * @brief
          */
         void operator=(HelpWindow const&);
-    
-    public:
-        // HelpWindow(HelpWindow const&) = delete;
-        // void operator=(HelpWindow const&) = delete;
 };
