@@ -91,6 +91,7 @@ int main(){
 
     election->run();
 
+    delete(bh);
     delete(election);
 
     return 0;
