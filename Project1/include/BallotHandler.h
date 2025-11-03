@@ -11,13 +11,16 @@ class Candidate;
 class BallotHandler {
 private:
     std::vector<Ballot*> ballots;
-    std::vector<Candidate> candidates;
+    std::vector<Candidate*> candidates;
     void readFile(const std::string& fileName, bool first);
     std::string trim(const std::string& str);
 
 public:
+    BallotHandler();
+    ~BallotHandler();
+    
     void handleFiles();
-    std::vector<Ballot*> recieveBallots();
+    std::vector<Ballot*> receiveBallots();
     std::vector<Ballot*> shuffleBallots(const std::vector<Ballot*>& ballots);
     std::vector<Candidate*> getCandidates() const;
 };

@@ -9,6 +9,10 @@
 #include <algorithm>
 #include <limits>
 
+BallotHandler::BallotHandler() {
+
+}
+
 std::string BallotHandler::trim(const std::string& str) {
     size_t first = str.find_first_not_of(" \t\r\n");
     if (first == std::string::npos) return "";
@@ -24,13 +28,12 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
     }
 
     std::string line;
-    if (!std::getline(infile, line)) {
-        std::cerr << "Error: Empty or invalid file '" << fileName << "'." << std::endl;
-        infile.close();
-        return;
-    }
-
     if (first) {
+        if (!std::getline(infile, line)) {
+            std::cerr << "Error: Empty or invalid file '" << fileName << "'." << std::endl;
+            infile.close();
+            return;
+        }
         // Parse candidates from the header line
         size_t pos = 0;
         while (pos < line.length()) {
@@ -56,7 +59,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             infile.close();
             return;
         }
-    }  // For non-first files, skip header (assume consistent)
+    }  else std::getline(infile, line);
 
     // Read ballot lines
     int localId = static_cast<int>(ballots.size()) + 1;
