@@ -169,6 +169,7 @@ void STVElection::updateCandidatePiles(int &numBallotsProcessed) {
     }
 
     if (candidatesToUpdate.size() == 0) {
+        // no winners this round; need to eliminate the candidate with the least votes
         std::vector<Candidate *> tiedCands = getTiedCandidates(candidatePiles, candidates);
         Candidate *losingCandidate = tiedCands.size() > 1 
             ? breakTie(tiedCands) : tiedCands.at(0);
@@ -238,6 +239,15 @@ void STVElection::run() {
     int algorithmPassNum = 0;
 
     std::vector<std::string> auditReportDetails = createAuditReportDetails(candidates, numSeats);
+
+    // append initial ballot preferences to audit report details string
+    for (Ballot *ballot : ballots) {
+        auditReportDetails.push_back(std::format(
+            "Ballot ID {:d} preference at start of election: {:s}", 
+            ballot->getId(), 
+            ballot->getCandidateRankings()[ballot->getPreference()]
+        ));
+    }
 
     while (winnersList.size() < numSeats) {
         algorithmPassNum++;

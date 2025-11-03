@@ -74,8 +74,10 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             ranks.push_back(trim(token));
         }
 
-        // Assume correct number of fields (as per requirements)
-        if (ranks.size() != candidates.size()) continue;
+        // Ensure we consider empty trailing fields 
+        if (ranks.size() < candidates.size()) {
+            ranks.resize(candidates.size(), "");
+        }
 
         std::map<int, std::string> candidateRanking;
         for (size_t i = 0; i < candidates.size(); ++i) {
