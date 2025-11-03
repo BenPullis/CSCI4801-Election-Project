@@ -11,7 +11,7 @@ class TestablePluralityElection : public PluralityElection {
         std::vector<Candidate *> getWinners() { return getWinnersList(); }
 };
 
-TEST(PluralityElectionTest, RunFunction) {
+TEST(RunUnitTests, RunFunction) {
     // Basic unit test for the run function, creates two candidates and three ballots with one seat to win.
     Candidate* john_pork = new Candidate("John Pork", "TikTok Party");
     Candidate* tim_cheese = new Candidate("Tim Cheese", "Reels Party");
@@ -34,7 +34,7 @@ TEST(PluralityElectionTest, RunFunction) {
     EXPECT_EQ(winners[0]->getName(), "John Pork") << "Expected John Pork to win with 2 votes.";
 }
 
-TEST(PluralityElectionTest, MultipleSeatsRunFunction) {
+TEST(RunUnitTests, MultipleSeatsRunFunction) {
     // Unit test for the run function that creates three candidates and six ballots with two seats to win.
     // Tests the PluralityElection class's capability of handling multiple seats when electing someone.
     Candidate* john_pork = new Candidate("John Pork", "TikTok Party");
@@ -63,7 +63,7 @@ TEST(PluralityElectionTest, MultipleSeatsRunFunction) {
     EXPECT_EQ(winners[1]->getName(), "Tim Cheese") << "Expected Tim Cheese to win with 2 votes.";
 }
 
-TEST(PluralityElectionTest, TieRunFunction) {
+TEST(RunUnitTests, TieRunFunction) {
     // Unit test for the run function that has a tie for one seat.
     // Passes if either one of the tied candidates receives it (up to chance).
     Candidate* john_pork = new Candidate("John Pork", "TikTok Party");
@@ -90,7 +90,7 @@ TEST(PluralityElectionTest, TieRunFunction) {
     EXPECT_TRUE(winners[0]->getName() == "John Pork" || winners[0]->getName() == "Tim Cheese");
 }
 
-TEST(PluralityElectionTest, NoBallotsRunFunction) {
+TEST(RunUnitTests, NoBallotsRunFunction) {
     // Unit test for the run function that has no ballots.
     // Passes if no winner is determined.
     Candidate* john_pork = new Candidate("John Pork", "TikTok Party");
@@ -110,7 +110,7 @@ TEST(PluralityElectionTest, NoBallotsRunFunction) {
     EXPECT_TRUE(winners.empty()) << "No ballots entered, therefore no winners!";
 }
 
-TEST(PluralityElectionTest, NoCandidateRunFunction) {
+TEST(RunUnitTests, NoCandidateRunFunction) {
     // Unit test for the run function that has no candidates.
     // Passes if no winner is determined.
     std::vector<Candidate*> candidates;
