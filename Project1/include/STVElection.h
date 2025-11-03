@@ -45,6 +45,8 @@ class STVElection : public IElection {
          */
         void addLoser(Candidate *candidate) { losersList.push_back(candidate); }
 
+
+    protected:
         /**
          * @brief Retrieves the list of losers for the election.
          * @return A vector containing the losing Candidates.
