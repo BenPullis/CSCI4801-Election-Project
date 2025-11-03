@@ -1,0 +1,13 @@
+SRS Election
+Date of the election: 2025-11-2
+
+Election Type: STV
+Election Date: 2025-11-02 20:04:48
+Candidates: Alice (PartyA), Bob (PartyB), Charlie (PartyC)
+Number of Candidates: 3
+Number of Seats: 1
+Ballot ID 1 preference after pass #1: Alice
+Ballot ID 2 preference after pass #2: Bob
+Ballot ID 3 preference after pass #3: Alice
+Elected Candidates: Alice
+Non-Elected Candidates: Bob, Charlie
