@@ -25,7 +25,7 @@ public:
      * @note The initial preference is set to 0.
      */
     Ballot(int newId, std::map<int, std::string> rankings)
-        : id(newId), preference(0), candidateRankings(rankings) {}
+        : id(newId), preference(rankings.begin()->first), candidateRankings(rankings) {}
 
     /**
      * @brief Retrieves the unique ballot ID.

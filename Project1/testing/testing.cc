@@ -79,7 +79,7 @@ TEST_F(BallotTest, ConstructorInitialization) {
     Ballot ballot(1, rankings);
 
     EXPECT_EQ(ballot.getId(), 1);
-    EXPECT_EQ(ballot.getPreference(), 0);
+    EXPECT_EQ(ballot.getPreference(), 1);
     EXPECT_EQ(ballot.getCandidateRankings().size(), 3);
     EXPECT_EQ(ballot.getCandidateRankings().at(1), "c1");
 }
