@@ -131,6 +131,11 @@ void PluralityElection::run(){
     std::vector<std::string> auditReportDetails = createAuditReport(candidates, numSeats);
     auditReportDetails.push_back("Elected Candidates: " + createCandidatesListStr(winnersList));
     reportGenerator->generateReport(auditReportDetails);
+
+    std::cout << "\n";
+    for (std::string reportLine : auditReportDetails) {
+        std::cout << reportLine << "\n";
+    }
 }
 
 Candidate *PluralityElection::breakTie(const std::vector<Candidate *>& tiedCandidates){
