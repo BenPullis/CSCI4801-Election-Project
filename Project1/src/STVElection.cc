@@ -198,7 +198,9 @@ std::vector<std::string> createAuditReportDetails(const std::vector<Candidate *>
         candidatesStr += std::format("{:s} ({:s}), ", cand->getName(), cand->getParty());
     }
     // remove last comma and space
-    candidatesStr.erase(candidatesStr.length() - 2);
+    if (candidatesStr.length() > 1) {
+        candidatesStr.erase(candidatesStr.length() - 2);
+    }
 
     return {
         "Election Type: STV",
@@ -220,7 +222,9 @@ std::string createCandidatesListString(const std::vector<Candidate *>& candidate
         candidatesListStr += candidate->getName() + ", ";
     }
     // remove last comma and space
-    candidatesListStr.erase(candidatesListStr.length() - 2);
+    if (candidatesListStr.length() > 1) {
+        candidatesListStr.erase(candidatesListStr.length() - 2);
+    }
     return candidatesListStr;
 }
 
@@ -254,4 +258,8 @@ void STVElection::run() {
     auditReportDetails.push_back("Elected Candidates: " + createCandidatesListString(winnersList));
     auditReportDetails.push_back("Non-Elected Candidates: " + createCandidatesListString(losersList));
     reportGenerator->generateReport(auditReportDetails);
+
+    for (std::string detail : auditReportDetails) {
+        std::cout << detail << "\n";
+    }
 }

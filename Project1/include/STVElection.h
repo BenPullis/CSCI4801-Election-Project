@@ -10,6 +10,7 @@
 #include "IElection.h"
 #include "Candidate.h"
 #include "BallotHandler.h"
+#include <iostream>
 
 /**
  * @class STVElection
