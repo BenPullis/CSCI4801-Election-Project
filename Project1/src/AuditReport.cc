@@ -5,25 +5,24 @@
 #include <ctime>
 #include <iomanip>
 
-/*This report should show the ballots that
-were assigned to a candidate as the election progressed. The report does not print to the screen, but should be
-run to a text file. All pertinent election data must be included in the report. At the top of the report, include:
-o SRS Election
-o The date of the election.
-o The candidates’ names and parties.
-o The total number of candidates.
-o The number of seats to be filled by the election.
-o The Elected list, in the order in which the candidates were added to the list.
-o The Non-Elected list, in the order in which candidates were added to the list.
-Be sure to show the order of the ballots after the shuffle if the shuffle was turned on. I recommend giving
-each ballot a unique ID and using this ID to track ballots after each pass of the algorithm. We want to
-know who had what ballots after each distribution round.
-*/
-
+/**
+ * @brief Default constructor for AuditReport.
+ *
+ * Initializes an AuditReport object with default settings.
+ */
 AuditReport::AuditReport() {
     // Default constructor
 }
 
+/**
+ * @brief Generates an audit report file with the provided details.
+ *
+ * This method creates a file named "audit_report.txt" and writes a header
+ * including the election title and current date, followed by the provided
+ * details. If the file cannot be opened, an error message is printed to stderr.
+ *
+ * @param details A vector of strings containing the details to include in the report.
+ */
 void AuditReport::generateReport(const std::vector<std::string>& details) {
     std::ofstream outfile("audit_report.txt");
     if (!outfile.is_open()) {

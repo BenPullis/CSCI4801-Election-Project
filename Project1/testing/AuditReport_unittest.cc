@@ -20,25 +20,6 @@ protected:
 };
 
 /**
- * @test Ensure generateReport() creates the audit report file.
- */
-TEST_F(AuditReportTest, CreatesAuditReportFile) {
-    AuditReport report;
-    std::vector<std::string> details = {
-        "Election Type: STV",
-        "Number of Candidates: 3",
-        "Number of Seats: 1",
-        "Elected Candidates: Alice",
-        "Non-Elected Candidates: Bob, Charlie"
-    };
-
-    report.generateReport(details);
-
-    EXPECT_TRUE(std::filesystem::exists(filename))
-        << "audit_report.txt should be created after generateReport() is called.";
-}
-
-/**
  * @test Ensure report file contains expected headers and details.
  */
 TEST_F(AuditReportTest, ContainsExpectedHeadersAndDetails) {

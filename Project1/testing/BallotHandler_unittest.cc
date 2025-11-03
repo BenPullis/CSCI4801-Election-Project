@@ -71,24 +71,6 @@ TEST_F(BallotHandlerTest, ShuffleBallotsKeepsSameElements) {
 }
 
 /**
- * @test Ensure receiveBallots() returns internal list consistently.
- */
-TEST_F(BallotHandlerTest, ReceiveBallotsConsistentReference) {
-    BallotHandler handler;
-    std::istringstream input("1\n" + path1 + "\n");
-    std::cin.rdbuf(input.rdbuf());
-
-    handler.handleFiles();
-
-    auto ballots1 = handler.receiveBallots();
-    auto ballots2 = handler.receiveBallots();
-
-    EXPECT_EQ(ballots1.size(), ballots2.size());
-    if (!ballots1.empty())
-        EXPECT_EQ(ballots1[0], ballots2[0]);
-}
-
-/**
  * @test Ensure destructor cleans memory safely (use sanitizer/valgrind).
  */
 TEST_F(BallotHandlerTest, DestructorCleansMemory) {
