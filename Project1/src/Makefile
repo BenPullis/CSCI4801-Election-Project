@@ -29,3 +29,6 @@ test: $(OBJFILES_NO_MAIN) $(TEST_SOURCES)
 clean:
 	rm -rf $(BUILD_DIR)
 	rm $(TEST_BIN)
+
+run:
+	../build/bin/executables
