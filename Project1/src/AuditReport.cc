@@ -39,7 +39,7 @@ void AuditReport::generateReport(const std::vector<std::string>& details) {
                        std::to_string(local->tm_mday);
 
     // Write header
-    outfile << "SRS Election" << std::endl;
+    outfile << "Election" << std::endl;
     outfile << "Date of the election: " << date << std::endl;
     outfile << std::endl;
 

@@ -236,6 +236,7 @@ void STVElection::run() {
     std::vector<std::string> auditReportDetails = createAuditReportDetails(candidates, numSeats);
 
     while (winnersList.size() < numSeats) {
+        algorithmPassNum++;
         updateCandidatePiles(numBallotsProcessed);
 
         // update audit report details string
@@ -243,7 +244,7 @@ void STVElection::run() {
             auditReportDetails.push_back(std::format(
                 "Ballot ID {:d} preference after pass #{:d}: {:s}", 
                 ballot->getId(), 
-                ++algorithmPassNum, 
+                algorithmPassNum, 
                 ballot->getCandidateRankings()[ballot->getPreference()]
             ));
         }
