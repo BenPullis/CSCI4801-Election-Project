@@ -15,6 +15,12 @@ PluralityElection::~PluralityElection(){
     delete reportGenerator;
 }
 
+/**
+ * @brief Retrieves a candidate pointer by name from a supplied list.
+ * @param candidateName Name of the candidate being searched for.
+ * @param candidates Collection of candidate pointers to scan.
+ * @returns Matching candidate pointer or nullptr when not found.
+ */
 Candidate *findCandidateViaName(std::string candidateName, const std::vector<Candidate *> candidates) {
     for (Candidate *candidate : candidates) {
         if (candidate->getName() == candidateName) {
@@ -22,6 +28,50 @@ Candidate *findCandidateViaName(std::string candidateName, const std::vector<Can
         }
     }
     return nullptr;
+}
+
+/**
+ * @brief Generates the static portion of the audit report metadata.
+ * @param candidates All candidates participating in the election.
+ * @param numSeats Number of seats allocated for this race.
+ * @returns Vector of formatted strings describing election metadata.
+ */
+std::vector<std::string> createAuditReport(const std::vector<Candidate *>& candidates, int numSeats) {
+    // build a human-readable local datetime string for the audit report
+    std::time_t now = std::time(nullptr);
+    char dateBuf[100];
+    std::strftime(dateBuf, sizeof(dateBuf), "%Y-%m-%d %H:%M:%S", std::localtime(&now));
+    std::string dateStr(dateBuf);
+
+    std::string candidatesStr = "";
+    for (Candidate *cand : candidates) {
+        candidatesStr += std::format("{:s} ({:s}), ", cand->getName(), cand->getParty());
+    }
+    // remove last comma and space
+    candidatesStr.erase(candidatesStr.length() - 2);
+
+    return {
+        "Election Type: Plurality",
+        "Election Date: " + dateStr,
+        "Candidates: " + candidatesStr,
+        "Number of Candidates: " + std::to_string(candidates.size()),
+        "Number of Seats: " + std::to_string(numSeats)
+    };
+}
+
+/**
+ * @brief Formats a comma-separated list of candidate names for reporting.
+ * @param candidates Candidate pointers to include in the list.
+ * @returns Comma-separated name string with trailing whitespace removed.
+ */
+std::string createCandidatesListStr(const std::vector<Candidate *>& candidates) {
+    std::string candidatesListStr = "";
+    for (Candidate *candidate : candidates) {
+        candidatesListStr += candidate->getName() + ", ";
+    }
+    // remove last comma and space
+    candidatesListStr.erase(candidatesListStr.length() - 2);
+    return candidatesListStr;
 }
 
 void PluralityElection::run(){
@@ -77,6 +127,10 @@ void PluralityElection::run(){
             }
         }
     }
+
+    std::vector<std::string> auditReportDetails = createAuditReport(candidates, numSeats);
+    auditReportDetails.push_back("Elected Candidates: " + createCandidatesListStr(winnersList));
+    reportGenerator->generateReport(auditReportDetails);
 }
 
 Candidate *PluralityElection::breakTie(const std::vector<Candidate *>& tiedCandidates){
