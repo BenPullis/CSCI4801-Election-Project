@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ballot_0',['Ballot',['../classBallot.html',1,'']]],
-  ['ballothandler_1',['BallotHandler',['../classBallotHandler.html',1,'']]]
+  ['ballot_0',['Ballot',['../class_ballot.html',1,'']]],
+  ['ballothandler_1',['BallotHandler',['../class_ballot_handler.html',1,'']]]
 ];
