@@ -93,8 +93,8 @@ TEST_F(AuditReportTest, HandlesEmptyDetailsGracefully) {
     std::getline(infile, firstLine);
     infile.close();
 
-    EXPECT_EQ(firstLine, "SRS Election")
-        << "First line should always contain 'SRS Election'.";
+    EXPECT_EQ(firstLine, "Election")
+        << "First line should always contain 'Election'.";
 }
 
 /**
