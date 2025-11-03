@@ -22,7 +22,7 @@ public:
      * @brief Constructor for a Ballot with an ID and candidate rankings.
      * @param newId used to initialize the ballot ID.
      * @param rankings A map associating candidate names with their ranking values.
-     * @note The initial preference is set to 0.
+     * @note The initial preference is set to the lowest number in the ranking.
      */
     Ballot(int newId, std::map<int, std::string> rankings)
         : id(newId), preference(rankings.begin()->first), candidateRankings(rankings) {}
