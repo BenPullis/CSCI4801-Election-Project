@@ -1,7 +1,0 @@
-<map id="IElection" name="IElection">
-<area shape="rect" id="Node000001" title="Abstract class for an election. Should be implemented concretely with both STV and Plurality." alt="" coords="85,93,163,119"/>
-<area shape="rect" id="Node000002" href="$classAuditReport.html" title=" " alt="" coords="5,5,104,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,45,54,57,58,68,71,81,87,91,84,95,67,85,54,71,49,58,48,45"/>
-<area shape="rect" id="Node000003" href="$classBallotHandler.html" title=" " alt="" coords="139,5,250,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="185,44,167,71,141,95,138,91,163,68,181,41"/>
-</map>

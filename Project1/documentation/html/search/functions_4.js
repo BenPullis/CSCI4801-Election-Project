@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['run_0',['run',['../classIElection.html#a4454e83019306bc0648d6f3318211c2e',1,'IElection::run()'],['../classPluralityElection.html#a466238c95f3c97ef3c345b23dc1c6799',1,'PluralityElection::run()'],['../classSTVElection.html#a29e388dd55570bd4621850b6a2695297',1,'STVElection::run()']]]
+  ['handlefiles_0',['handleFiles',['../class_ballot_handler.html#a1755bd4a0eff4028876808c33e9cea3c',1,'BallotHandler']]],
+  ['helpwindow_1',['HelpWindow',['../class_help_window.html#a2b7a462b4cb7876cd597efe4c52a3da7',1,'HelpWindow::HelpWindow()'],['../class_help_window.html#a0b7be0a8c883d2ebed3439a5524d4e5f',1,'HelpWindow::HelpWindow(HelpWindow const &amp;)']]]
 ];

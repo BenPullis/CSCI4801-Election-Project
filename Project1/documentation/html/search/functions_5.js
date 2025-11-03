@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['setfirstvote_0',['setFirstVote',['../classCandidate.html#a269b06b9cb8073766a3cb16a55e80c13',1,'Candidate']]],
-  ['setpreference_1',['setPreference',['../classBallot.html#a03e62d932995500b07ec32dfe145da32',1,'Ballot']]]
+  ['operator_3d_0',['operator=',['../class_help_window.html#a3ce747dc61864587f30b34f4e78730fa',1,'HelpWindow']]]
 ];
