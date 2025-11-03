@@ -1,9 +1,0 @@
-<map id="STVElection" name="STVElection">
-<area shape="rect" id="Node000001" title="Class representing a Single Transferable Vote (STV) election." alt="" coords="93,181,192,207"/>
-<area shape="rect" id="Node000002" href="$classIElection.html" title="Abstract class for an election. Should be implemented concretely with both STV and Plurality." alt="" coords="15,93,94,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="78,126,132,179,129,183,74,130"/>
-<area shape="rect" id="Node000003" href="$classAuditReport.html" title=" " alt="" coords="5,5,104,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="57,45,57,93,52,93,52,45"/>
-<area shape="rect" id="Node000004" href="$classBallotHandler.html" title=" " alt="" coords="118,93,229,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="167,132,149,182,144,180,162,131"/>
-</map>
