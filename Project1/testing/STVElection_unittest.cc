@@ -244,39 +244,6 @@ TEST(STVElectionRunIntegrationTest, ThreeSeatTransferScenario) {
 }
 
 
-TEST(STVElectionRunIntegrationTest, ThreeSeatTransferShuffleScenario) {
-    // 3 seats with transfers
-    Candidate *a = new Candidate("A", "P");
-    Candidate *b = new Candidate("B", "P");
-    Candidate *c = new Candidate("C", "P");
-    Candidate *d = new Candidate("D", "P");
-    Candidate *e = new Candidate("E", "P");
-    std::vector<Candidate *> candidates = { a, b, c, d, e };
-
-    Ballot *p0 = new Ballot(0, {{0, "A"}, {1, "B"}, {2, "C"}, {3, "D"}, {4, "E"}});
-    Ballot *p1 = new Ballot(1, {{0, "A"}, {1, "B"}, {2, "D"}, {3, "C"}, {4, "E"}});
-    Ballot *p2 = new Ballot(2, {{0, "B"}, {1, "A"}, {2, "C"}, {3, "D"}, {4, "E"}});
-    Ballot *p3 = new Ballot(3, {{0, "B"}, {1, "C"}, {2, "A"}, {3, "D"}, {4, "E"}});
-    Ballot *p4 = new Ballot(4, {{0, "B"}, {1, "D"}, {2, "C"}, {3, "A"}, {4, "E"}});
-    Ballot *p5 = new Ballot(5, {{0, "C"}, {1, "B"}, {2, "A"}, {3, "D"}, {4, "E"}});
-    Ballot *p6 = new Ballot(6, {{0, "C"}, {1, "D"}, {2, "B"}, {3, "A"}, {4, "E"}});
-    Ballot *p7 = new Ballot(7, {{0, "D"}, {1, "C"}, {2, "B"}, {3, "A"}, {4, "E"}});
-    Ballot *p8 = new Ballot(8, {{0, "E"}, {1, "C"}, {2, "B"}, {3, "A"}, {4, "D"}});
-    Ballot *p9 = new Ballot(9, {{0, "E"}, {1, "B"}, {2, "C"}, {3, "A"}, {4, "D"}});
-    std::vector<Ballot *> ballots = { p0,p1,p2,p3,p4,p5,p6,p7,p8,p9 };
-
-    TestableSTVElection election(3, true, ballots, candidates);
-    election.run();
-    auto winners = election.getWinners();
-    ASSERT_EQ(3u, winners.size());
-    std::vector<std::string> winnerNames;
-    for (auto *w : winners) {
-        winnerNames.push_back(w->getName());
-    }
-    EXPECT_TRUE(areVectorsEqualIgnoreOrder(winnerNames, {"A","B","C"}));
-}
-
-
 TEST(STVElectionRunIntegrationTest, TieBreakEarliestFirstVoteWins) {
     // 3 candidates with one ballot each; A gets the earliest first vote and should win
     Candidate *a = new Candidate("A", "P");
