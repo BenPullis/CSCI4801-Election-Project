@@ -1,0 +1,40 @@
+sequenceDiagram
+    actor Election Official
+    activate Election Official
+    activate S#58; STVElection
+    Election Official->>S#58; STVElection: run()
+    opt user shuffles ballots
+    activate BH#58; BallotHandler
+        S#58; STVElection->>BH#58; BallotHandler: shuffleBallots()
+        BH#58; BallotHandler-->>S#58; STVElection: shuffled ballots
+        deactivate BH#58; BallotHandler
+    end
+    loop While there are still unprocessed ballots or seats unassigned
+        loop for each ballot
+        activate B#58; Ballot
+            S#58; STVElection->>B#58; Ballot: getPreference()
+            B#58; Ballot-->>S#58; STVElection: preference
+            opt Candidate received first vote
+                activate C#58; Candidate
+                S#58; STVElection->>C#58; Candidate: setFirstVote(timestamp)
+            end
+        end
+        opt no candidate elected and a tie occurs when eliminating a candidate
+            loop for each candidate that tied 
+                S#58; STVElection->>C#58; Candidate: getFirstVote()
+                C#58; Candidate-->>S#58; STVElection: timestamp of first vote
+                deactivate C#58; Candidate
+            end
+        end
+        loop for each ballot in most recently elected/eliminated candidate's candidatePiles
+            S#58; STVElection->>B#58; Ballot: getCandidateRankings()
+            B#58; Ballot-->>S#58; STVElection: candidate rankings
+            S#58; STVElection->>B#58; Ballot: setPreference(newPreference)
+        end
+        deactivate B#58; Ballot
+    end
+    S#58; STVElection-->>Election Official: elected and non-elected lists
+    deactivate S#58; STVElection
+    deactivate Election Official
+
+

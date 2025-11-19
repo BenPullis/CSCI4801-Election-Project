@@ -1,0 +1,79 @@
+---
+config:
+  look: classic
+---
+classDiagram
+direction TB
+    class IElection {
+        #int numSeats
+        #HelpWindow helpWindow
+        #AuditReport reportGenerator
+        #BallotHandler ballotHandler
+        #Vector~Ballot~ ballots
+        #Vector~Candidate~ winnersList
+        <<abstract>>
+        +run()void
+        #breakTie(vector~Candidates~) Candidate
+        #Vector~Candidate~ candidates
+        #getWinnersList() Vector~Candidate~
+        #addWinner(Candidate candidate) void
+    }
+    class HelpWindow {
+        -HelpWindow instance
+        -HelpWindow()
+        +getInstance() HelpWindow
+        +getHelp() String
+    }
+    class AuditReport {
+        +AuditReport()
+        +generateReport(String[] details)void
+    }
+    class STVElection {
+        -Map~String candidateName, int ballotCount~ candidatePiles
+        -int droopQuota
+        -Vector~Candidate~ losersList
+        -getLosersList() Vector~Candidate~
+        -addLoser(Candidate candidate) void
+        -calculateDroopQuota(int numBallots)int
+        -updateCandidatePiles(String preference) void
+        +run() void
+    }
+    class PluralityElection {
+        -Map~String candidateName, int ballotCount~ candidateCounts
+        -setCandidateCounts(String candidateName, int ballotCount) void
+        +run()void
+    }
+    class BallotHandler {
+        +handleFiles()
+        +recieveBallots() Vector~Ballot~
+        +shuffleBallots(Vector~Ballot~)Vector~Ballot~
+    }
+    class Ballot {
+        -int id
+        -String preference
+        -Map~String candidateName, int candidateRank~ candidateRanking
+        +getCandidateRanking() Map~String candidateName: int candidateRank~
+        +getId()int
+        +getPreference()String
+        +setPreference(String preference)void
+    }
+
+    class Candidate {
+        -String candidateName
+        +getName() String
+        -String candidateParty
+        +getParty() String
+        -int firstVote
+        +getFirstVote() int
+        +setFirstVote(int firstVote)
+    }
+
+    BallotHandler --* IElection
+    Ballot --* IElection
+    AuditReport --* IElection
+    HelpWindow --* IElection
+    IElection ..|> STVElection
+    IElection ..|> PluralityElection
+    Ballot -- BallotHandler
+    Candidate -- BallotHandler
+    Candidate --* IElection
