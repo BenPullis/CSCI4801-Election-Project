@@ -50,12 +50,14 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
     }
 
     std::string line;
+    std::string electionType = "";
     if (first) {
         if (!std::getline(infile, line)) {
             std::cerr << "Error: Empty or invalid file '" << fileName << "'." << std::endl;
             infile.close();
             return;
         }
+
         // Parse candidates from the header line
         size_t pos = 0;
         while (pos < line.length()) {
@@ -102,19 +104,23 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         }
 
         std::map<int, std::string> candidateRanking;
+        int numRanked = 0;
         for (size_t i = 0; i < candidates.size(); ++i) {
             if (!ranks[i].empty()) {
                 try {
                     int rank = std::stoi(ranks[i]);
                     candidateRanking[rank] = candidates[i]->getName();
+                    numRanked++;
                 } catch (const std::exception&) {
                     // Invalid rank, skip entry (assumed correct)
                 }
             }
         }
 
-        Ballot* b = new Ballot(localId++, candidateRanking);
-        ballots.push_back(b);
+        if (electionType != "STV" || static_cast<float>(numRanked) / candidates.size() >= .6) {
+            Ballot* b = new Ballot(localId++, candidateRanking);
+            ballots.push_back(b);
+        }
     }
 
     infile.close();
