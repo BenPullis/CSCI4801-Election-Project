@@ -31,6 +31,12 @@ class MVElection : public IElection {
         int getCandidateCounts(std::string candidateName){return candidateCounts[candidateName];}
 
         Candidate *breakTie(const std::vector<Candidate *>& tiedCandidates) override;
+
+        Candidate* findCandidateByName(std::string candidateName, const std::vector<Candidate *> candidates);
+
+        std::vector<std::string> createAuditReport(const std::vector<Candidate *>& candidates, int numSeats);
+
+        std::string createCandidatesListStr(const std::vector<Candidate *>& candidates);
         
 };
 
