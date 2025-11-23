@@ -30,7 +30,6 @@ int main(){
     bh->handleFiles();
     std::string electionType = bh->getElectionType();
     int numSeats = bh->getNumSeats();
-
     vector<Ballot*> ballots = bh->receiveBallots();
 
     vector<Candidate*> candidates = bh->getCandidates();
@@ -43,16 +42,8 @@ int main(){
         election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
             ballots, candidates, bh);
     }
-    else if(electionType == "plurality"){
+    else if(electionType == "pv"){
         election = new PluralityElection(numSeats, ballots, candidates);
-    }
-
-    while(true){
-        cin >> input;
-        if(input == "Help" || input == "help"){
-            help.getHelp();
-            cout << "'Help' for Further Help: ";
-        }
     }
 
     election->run();

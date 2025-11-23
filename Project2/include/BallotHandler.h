@@ -20,6 +20,8 @@ class BallotHandler {
 private:
     std::vector<Ballot*> ballots;
     std::vector<Candidate*> candidates;
+    std::string electionType;
+    int numSeats;
 
     /**
      * @brief Reads ballot data from a file.
@@ -87,6 +89,20 @@ public:
      * @return A constant vector of pointers to Candidate objects.
      */
     std::vector<Candidate*> getCandidates() const;
+
+    /**
+     * @brief Retrieves the election type.
+     * 
+     * @return The election type as a string.
+     */
+    std::string getElectionType() const { return electionType; }
+
+    /**
+     * @brief Retrieves the number of seats.
+     * 
+     * @return The number of seats as an integer.
+     */
+    int getNumSeats() const { return numSeats; }
 };
 
 #endif // BALLOTHANDLER_H

@@ -50,7 +50,6 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
     }
 
     std::string line;
-    std::string electionType = "";
     if (first) {
         if (!std::getline(infile, line)) {
             std::cerr << "Error: Empty or invalid file '" << fileName << "'." << std::endl;
@@ -58,7 +57,15 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             return;
         }
 
-        // Parse candidates from the header line
+        electionType = trim(line);
+        // convert electionType to all lower case
+        std::transform(electionType.begin(), electionType.end(), electionType.begin(), ::tolower);
+
+        std::getline(infile, line);
+        numSeats = std::stoi(trim(line));
+
+        std::getline(infile, line);
+        // Parse candidates
         size_t pos = 0;
         while (pos < line.length()) {
             if (line[pos] != '[') {
@@ -83,7 +90,12 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             infile.close();
             return;
         }
-    }  else std::getline(infile, line);
+    } else {
+        // skip first 3 lines
+        std::getline(infile, line);
+        std::getline(infile, line);
+        std::getline(infile, line);
+    } 
 
     // Read ballot lines
     int localId = static_cast<int>(ballots.size()) + 1;
@@ -117,7 +129,8 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             }
         }
 
-        if (electionType != "STV" || static_cast<float>(numRanked) / candidates.size() >= .6) {
+        // ensure if electionType is stv, then at least 60% of candidates ranked
+        if (electionType != "stv" || static_cast<float>(numRanked) / candidates.size() >= .6) {
             Ballot* b = new Ballot(localId++, candidateRanking);
             ballots.push_back(b);
         }
