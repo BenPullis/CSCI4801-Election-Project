@@ -86,3 +86,23 @@ TEST_F(BallotHandlerTest, DestructorCleansMemory) {
     delete handler; // destructor should safely free memory
     SUCCEED();
 }
+
+/**
+ * @test Ensure invalid STV ballots are removed correctly.
+ */
+TEST_F(BallotHandlerTest, RemoveInvalidSTVBallots) {
+    BallotHandler handler;
+
+    // Simulate user entering file info via stdin
+    auto cinbuf = std::cin.rdbuf();
+    std::istringstream input("1\n../testing/ballots4.csv\n");
+    std::cin.rdbuf(input.rdbuf());
+
+    handler.handleFiles();
+
+    std::cin.rdbuf(cinbuf);
+
+    // Verify ballots (4 valid, 4 are removed)
+    auto ballots = handler.receiveBallots();
+    EXPECT_EQ(ballots.size(), 4) << "Expected 4 total ballots.";
+}
