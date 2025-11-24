@@ -16,6 +16,9 @@ private:
     int preference;
     std::map<int, std::string> candidateRankings;
 
+    bool isMV = false;
+    std::vector<int> mvVotes;
+
 public:
 
     /**
@@ -26,6 +29,9 @@ public:
      */
     Ballot(int newId, std::map<int, std::string> rankings)
         : id(newId), preference(rankings.begin()->first), candidateRankings(rankings) {}
+
+    Ballot(int id, std::vector<int> votes)
+        : id(id), isMV(true), mvVotes(votes) {}
 
     /**
      * @brief Retrieves the unique ballot ID.
@@ -51,6 +57,10 @@ public:
      * @return A map associating candidate names with their ranking values.
      */
     std::map<int, std::string> getCandidateRankings() { return candidateRankings; }
+
+    bool getIsMV() const { return isMV; }
+
+    std::vector<int> getMVVotes() const { return mvVotes; }
 };
 
 #endif /* BALLOT_H_ */

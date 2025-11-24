@@ -33,6 +33,31 @@ std::string BallotHandler::trim(const std::string& str) {
     return str.substr(first, (last - first + 1));
 }
 
+void BallotHandler::parseCandidates(const std::string& line) {
+    size_t pos = 0;
+
+    while (pos < line.length()) {
+        if (line[pos] != '[') { pos++; continue; }
+
+        pos++; // skip '['
+        size_t comma = line.find(',', pos);
+        if (comma == std::string::npos) break;
+
+        std::string name = trim(line.substr(pos, comma - pos));
+        pos = comma + 1;
+
+        size_t close = line.find(']', pos);
+        if (close == std::string::npos) break;
+
+        std::string party = trim(line.substr(pos, close - pos));
+        pos = close + 1;
+
+        if (pos < line.length() && line[pos] == ',') pos++;
+
+        candidates.push_back(new Candidate(name, party));
+    }
+}
+
 /**
  * @brief Reads ballot data from a file.
  *
@@ -56,32 +81,29 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
             infile.close();
             return;
         }
-        // Parse candidates from the header line
-        size_t pos = 0;
-        while (pos < line.length()) {
-            if (line[pos] != '[') {
-                pos++;
-                continue;
-            }
-            pos++;  // Skip '['
-            size_t comma = line.find(',', pos);
-            if (comma == std::string::npos) break;
-            std::string name = trim(line.substr(pos, comma - pos));
-            pos = comma + 1;
-            size_t close = line.find(']', pos);
-            if (close == std::string::npos) break;
-            std::string party = trim(line.substr(pos, close - pos));
-            pos = close + 1;
-            if (pos < line.length() && line[pos] == ',') pos++;
+        
+        // Read election type
+        std::getline(infile, electionType);      // STV, PV, MV
+        electionType = trim(electionType);
 
-            candidates.push_back(new Candidate(name, party));
-        }
+        std::getline(infile, line);              // number of seats (ignored right now)
+
+
+        // Parse candidates from the header line
+        std::getline(infile, line);
+        parseCandidates(line);
+
         if (candidates.empty()) {
             std::cerr << "Error: No candidates found in header of '" << fileName << "'." << std::endl;
             infile.close();
             return;
         }
-    }  else std::getline(infile, line);
+    }  else {
+        // Skip header lines
+        std::getline(infile, line);
+        std::getline(infile, line);
+        std::getline(infile, line);
+    }
 
     // Read ballot lines
     int localId = static_cast<int>(ballots.size()) + 1;
@@ -91,30 +113,49 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
 
         std::stringstream ss(line);
         std::string token;
-        std::vector<std::string> ranks;
+        std::vector<std::string> fields;
+
         while (std::getline(ss, token, ',')) {
-            ranks.push_back(trim(token));
+            fields.push_back(trim(token));
         }
+        fields.resize(candidates.size(), "");
 
-        // Ensure we consider empty trailing fields 
-        if (ranks.size() < candidates.size()) {
-            ranks.resize(candidates.size(), "");
-        }
+        if (electionType == "STV" || electionType == "PV") {
 
-        std::map<int, std::string> candidateRanking;
-        for (size_t i = 0; i < candidates.size(); ++i) {
-            if (!ranks[i].empty()) {
-                try {
-                    int rank = std::stoi(ranks[i]);
-                    candidateRanking[rank] = candidates[i]->getName();
-                } catch (const std::exception&) {
-                    // Invalid rank, skip entry (assumed correct)
+            std::map<int, std::string> ranking;
+
+            for (size_t i = 0; i < fields.size(); i++) {
+                if (!fields[i].empty()) {
+                    try {
+                        int rank = std::stoi(fields[i]);
+                        ranking[rank] = candidates[i]->getName();
+                    } catch (...) {
+                        // Invalid rank, ignore
+                    }
                 }
             }
-        }
 
-        Ballot* b = new Ballot(localId++, candidateRanking);
-        ballots.push_back(b);
+            Ballot* b = new Ballot(localId++, ranking);
+            ballots.push_back(b);
+        } else if (electionType == "MV") {
+
+            std::vector<int> votes(candidates.size(), 0);
+
+            for (size_t i = 0; i < fields.size(); i++) {
+                if (fields[i] == "1") {
+                    votes[i] = 1;
+                }
+            }
+
+            // Blank ballot handling
+            bool hasVote = false;
+            for (int v : votes) if (v == 1) hasVote = true;
+            if (!hasVote) continue; // drop empty MV ballot
+
+            Ballot* b = new Ballot(localId++, votes);
+
+            ballots.push_back(b);
+        }
     }
 
     infile.close();
