@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 #include <sstream>
 #include <random>
 #include <algorithm>
@@ -133,6 +134,9 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         if (electionType != "stv" || static_cast<float>(numRanked) / candidates.size() >= .6) {
             Ballot* b = new Ballot(localId++, candidateRanking);
             ballots.push_back(b);
+        } else if (electionType == "stv" && static_cast<float>(numRanked) / candidates.size() < .6) {
+            Ballot* b = new Ballot(localId++, candidateRanking);
+            thrownOutBallots.push_back(b);
         }
     }
 
@@ -153,13 +157,53 @@ void BallotHandler::handleFiles() {
     bool first = true;
     for (int i = 0; i < numFiles; ++i) {
         std::string fileName;
-        std::cout << "Enter file name " << (i + 1) << ": ";
-        std::getline(std::cin, fileName);
-        fileName = trim(fileName);
-        if (fileName.empty()) continue;
+        while (true) {
+            std::cout << "Enter file name " << (i + 1) << ": ";
+            std::getline(std::cin, fileName);
+            fileName = trim(fileName);
+            if (fileName.empty()) continue;
 
-        readFile(fileName, first);
-        first = false;
+            if (!std::filesystem::exists(fileName)) {
+                std::cout << "File does not exist, try again!";
+                continue;
+            }
+
+            readFile(fileName, first);
+            first = false;
+
+            break;
+        }
+    }
+
+    if (!thrownOutBallots.empty()) {
+        thrownOutBallotsFile();
+    }
+}
+
+/**
+ * @brief Creates a new file containing the thrown out ballots.
+ *
+ * @return N/A
+ */
+void BallotHandler::thrownOutBallotsFile() {
+    // Get current date
+    std::time_t now = std::time(nullptr);
+    std::tm* local = std::localtime(&now);
+    std::string date = std::to_string(local->tm_mon + 1) +
+                       std::to_string(local->tm_mday) +
+                       std::to_string(local->tm_year + 1900);
+
+    std::ofstream outfile("STVBallotErrors" + date + ".csv");
+    if (!outfile.is_open()) {
+        std::cerr << "Error: Could not open STVBallotErrors.csv for writing." << std::endl;
+        return;
+    }
+    for (auto* b : thrownOutBallots) {
+        outfile << b->getId();
+        for (const auto& [rank, name] : b->getCandidateRankings()) {
+            outfile << "," << name;
+        }
+        outfile << std::endl;
     }
 }
 
@@ -204,5 +248,6 @@ std::vector<Candidate*> BallotHandler::getCandidates() const {
  */
 BallotHandler::~BallotHandler() {
     for (auto b : ballots) delete b;
+    for (auto tb : thrownOutBallots) delete tb;
     for (auto c : candidates) delete c;
 }

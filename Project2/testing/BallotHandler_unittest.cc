@@ -3,6 +3,7 @@
 #include "Ballot.h"
 #include "Candidate.h"
 #include <sstream>
+#include <filesystem>
 #include <algorithm>
 
 /**
@@ -105,4 +106,7 @@ TEST_F(BallotHandlerTest, RemoveInvalidSTVBallots) {
     // Verify ballots (4 valid, 4 are removed)
     auto ballots = handler.receiveBallots();
     EXPECT_EQ(ballots.size(), 4) << "Expected 4 total ballots.";
+    
+    ASSERT_TRUE(std::filesystem::exists(filename))
+        << "audit_report.txt should exist after report generation.";
 }

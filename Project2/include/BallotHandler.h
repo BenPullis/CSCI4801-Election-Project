@@ -19,6 +19,7 @@ class Candidate;
 class BallotHandler {
 private:
     std::vector<Ballot*> ballots;
+    std::vector<Ballot*> thrownOutBallots;
     std::vector<Candidate*> candidates;
     std::string electionType;
     int numSeats;
@@ -103,6 +104,8 @@ public:
      * @return The number of seats as an integer.
      */
     int getNumSeats() const { return numSeats; }
+
+    void thrownOutBallotsFile();
 };
 
 #endif // BALLOTHANDLER_H
