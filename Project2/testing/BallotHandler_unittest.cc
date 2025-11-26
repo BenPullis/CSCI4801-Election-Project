@@ -21,10 +21,10 @@ protected:
 };
 
 /**
- * @test Ensure handleFiles() properly loads candidates and ballots
+ * @test Ensure handleFiles() properly parses header and ballots
  *       from multiple files.
  */
-TEST_F(BallotHandlerTest, HandleFilesAndCandidates) {
+TEST_F(BallotHandlerTest, TestHeaderParsing) {
     BallotHandler handler;
 
     // Simulate user entering file info via stdin
@@ -35,6 +35,11 @@ TEST_F(BallotHandlerTest, HandleFilesAndCandidates) {
     handler.handleFiles();
 
     std::cin.rdbuf(cinbuf);
+
+    // Verify election type and number of seats
+    EXPECT_EQ("pv", handler.getElectionType()) << "Expected 'pv' election type";
+    // Verify number of seats
+    EXPECT_EQ(1, handler.getNumSeats()) << "Expected 1 seat";
 
     // Verify candidates
     auto candidates = handler.getCandidates();
