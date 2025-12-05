@@ -12,12 +12,42 @@ class BallotHandlerTest : public ::testing::Test {
 protected:
     std::string path1;
     std::string path2;
+    std::string path3;
 
     void SetUp() override {
         path1 = "../testing/ballots1.csv";
         path2 = "../testing/ballots2.csv";
+        path3 = "../testing/ballots4.csv";
     }
 };
+
+TEST_F(BallotHandlerTest, MVBallotsAreParsedCorrectly) {
+    BallotHandler handler;
+
+    auto cinbuf = std::cin.rdbuf();
+    std::istringstream input("1\n" + path3 + "\n");
+    std::cin.rdbuf(input.rdbuf());
+
+    handler.handleFiles();
+    std::cin.rdbuf(cinbuf);
+
+    auto candidates = handler.getCandidates();
+    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots1.csv header.";
+    EXPECT_EQ(candidates[0]->getName(), "Alice");
+    EXPECT_EQ(candidates[1]->getName(), "Bob");
+    EXPECT_EQ(candidates[2]->getName(), "Charlie");
+
+    auto ballots = handler.receiveBallots();
+    ASSERT_EQ(ballots.size(), 1) << "Expected exactly one MV Ballot";
+
+    Ballot* b = ballots[0];
+    const std::vector<int>& votes = b->getMVVotes();
+
+    ASSERT_EQ(votes.size(), 3);
+    EXPECT_EQ(votes[0], 1);
+    EXPECT_EQ(votes[1], 0);
+    EXPECT_EQ(votes[2], 1);
+}
 
 /**
  * @test Ensure handleFiles() properly loads candidates and ballots

@@ -75,13 +75,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
     }
 
     std::string line;
-    if (first) {
-        if (!std::getline(infile, line)) {
-            std::cerr << "Error: Empty or invalid file '" << fileName << "'." << std::endl;
-            infile.close();
-            return;
-        }
-        
+    if (first) {        
         // Read election type
         std::getline(infile, electionType);      // STV, PV, MV
         electionType = trim(electionType);

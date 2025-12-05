@@ -23,7 +23,7 @@ private:
     std::string electionType;
     int numSeats;
 
-    void BallotHandler::parseCandidates(const std::string& line);
+    void parseCandidates(const std::string& line);
 
     /**
      * @brief Reads ballot data from a file.
