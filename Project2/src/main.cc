@@ -8,6 +8,7 @@
 #include "Candidate.h"
 #include "BallotHandler.h"
 #include <vector>
+#include "MVElection.h"
 
 using namespace std;
 
@@ -61,34 +62,43 @@ int main(){
 
     vector<Candidate*> candidates = bh->getCandidates();
 
-    cout << "Now Choose The Type Of Election You Would Like, 'STV', 'Plurality', Or 'Help' for Further Help: ";
+    cout << "Now Choose The Type Of Election You Would Like, 'STV', 'Plurality', 'MV', Or 'Help' for Further Help: ";
     IElection *election;
 
-    while(true){
+    while (true) {
         cin >> input;
-        if(input == "Help" || input == "help"){
+
+        if (input == "Help" || input == "help") {
             help.getHelp();
-            cout << "Choose The Type Of Election You Would Like, 'STV', 'Plurality', Or 'Help' for Further Help: ";
+            cout << "Choose The Type Of Election You Would Like, 'STV', 'Plurality', 'MV', Or 'Help' for Further Help: ";
+            continue;
         }
-        else{
-            if(input == "STV" || input == "stv" || input == "Stv"){
-                cout << "Choose whether you would like to shuffle the ballots (Y/N): ";
-                string shuffleChoice;
-                cin >> shuffleChoice;
-                election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
-                    ballots, candidates, bh);
-                break;
-            }
-            else if(input == "PLURALITY" || input == "plurality" || input == "Plurality"){
-                election = new PluralityElection(numSeats, ballots, candidates);
-                break;
-            }
-            else{
-                cout << "Invalid Input, Please Try Again: ";
-                break;
-            }
+
+        if (input == "STV" || input == "stv" || input == "Stv") {
+            cout << "Choose whether you would like to shuffle the ballots (Y/N): ";
+            string shuffleChoice;
+            cin >> shuffleChoice;
+
+            election = new STVElection(
+                numSeats,
+                shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
+                ballots, candidates, bh
+            );
+            break;
+        }
+        else if (input == "PLURALITY" || input == "plurality" || input == "Plurality") {
+            election = new PluralityElection(numSeats, ballots, candidates);
+            break;
+        }
+        else if (input == "MV" || input == "mv" || input == "Mv") {
+            election = new MVElection(numSeats, ballots, candidates);
+            break;
+        }
+        else {
+            cout << "Invalid Input, Please Try Again: ";
         }
     }
+
 
     election->run();
 
