@@ -66,6 +66,20 @@ std::string MVElection::createCandidatesListStr(const std::vector<Candidate *>& 
 
 void MVElection::run(){
     for (Ballot *ballot : ballots) {
+        // Update:
+        if (ballot->getIsMV()) {
+
+            const std::vector<int>& votes = ballot->getMVVotes();
+
+            for (size_t i = 0; i < votes.size(); i++) {
+                if (votes[i] == 1) {
+                    std::string candidateName = candidates[i]->getName();
+                    candidateCounts[candidateName]++;
+                }
+            }
+        } // else it was not an MV election, don't read the ballots
+        
+        /*
         std::map<int, std::string> candidateRankings = ballot->getCandidateRankings();
 
         for(auto &[rank, name] : candidateRankings){
@@ -74,7 +88,7 @@ void MVElection::run(){
             } else {
             setCandidateCounts(name, 1);
             }
-        }
+        }*/
     }
 
     std::vector<std::pair<std::string, int>> sortedCandidateCounts(candidateCounts.begin(), candidateCounts.end());
