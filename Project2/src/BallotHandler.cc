@@ -69,10 +69,8 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         if (electionType == "stv") {
             // figure out whether to shuffle ballots
             std::getline(infile, line);
-            char shufB = static_cast<char>(std::tolower(
-                static_cast<unsigned char>(trim(line).at(0))));
-            isShuffleBallots = shufB == 'y';
-            std::cout << shufB << " " << isShuffleBallots;
+            isShuffleBallots = static_cast<char>(std::tolower(
+                static_cast<unsigned char>(trim(line).at(0)))) == 'y';
         }
 
         std::getline(infile, line);
@@ -112,7 +110,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
     } 
 
     // Read ballot lines
-    int localId = static_cast<int>(ballots.size()) + 1;
+    int localId = static_cast<int>(ballots.size() + thrownOutBallots.size()) + 1;
     while (std::getline(infile, line)) {
         line = trim(line);
         if (line.empty()) continue;
