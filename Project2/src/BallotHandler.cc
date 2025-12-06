@@ -180,11 +180,6 @@ void BallotHandler::handleFiles() {
     }
 }
 
-/**
- * @brief Creates a new file containing the thrown out ballots.
- *
- * @return N/A
- */
 void BallotHandler::thrownOutBallotsFile() {
     // Get current date
     std::time_t now = std::time(nullptr);

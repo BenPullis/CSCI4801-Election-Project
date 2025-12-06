@@ -105,6 +105,11 @@ public:
      */
     int getNumSeats() const { return numSeats; }
 
+    /**
+     * @brief Creates a new file containing the thrown out ballots.
+     *
+     * @return N/A
+     */
     void thrownOutBallotsFile();
 };
 
