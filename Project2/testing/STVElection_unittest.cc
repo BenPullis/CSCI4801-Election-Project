@@ -60,8 +60,8 @@ bool areVectorsEqualIgnoreOrder(std::vector<T> a, std::vector<T> b) {
 
 class TestableSTVElection : public STVElection {
     public:
-        TestableSTVElection(int nSeats, bool sb, std::vector<Ballot *> b, std::vector<Candidate *> c)
-            : STVElection(nSeats, sb, b, c, new BallotHandler())
+        TestableSTVElection(int nSeats, std::vector<Ballot *> b, std::vector<Candidate *> c)
+            : STVElection(nSeats, b, c)
         {}
         std::vector<Candidate *> getWinners() { return getWinnersList(); }
 };
@@ -184,7 +184,7 @@ TEST(STVElectionRunIntegrationTest, ExpandedScenarios) {
     Ballot *b4 = new Ballot(4, {{0, "Cand 3"}});
     std::vector<Ballot *> ballots = { b0, b1, b2, b3, b4 };
 
-    TestableSTVElection election(2, false, ballots, candidates);
+    TestableSTVElection election(2, ballots, candidates);
     election.run();
     auto winners = election.getWinners();
     EXPECT_EQ(2u, winners.size());
@@ -203,7 +203,7 @@ TEST(STVElectionRunIntegrationTest, ExpandedScenarios) {
     Ballot *bb3 = new Ballot(3, {{0, "D3"}, {1, "D2"}, {2, "D1"}});
     std::vector<Ballot *> bset = { bb0, bb1, bb2, bb3 };
 
-    TestableSTVElection election2(1, false, bset, creds);
+    TestableSTVElection election2(1, bset, creds);
     election2.run();
     auto winners2 = election2.getWinners();
     ASSERT_EQ(1u, winners2.size());
@@ -232,7 +232,7 @@ TEST(STVElectionRunIntegrationTest, ThreeSeatTransferScenario) {
     Ballot *p9 = new Ballot(9, {{0, "E"}, {1, "B"}, {2, "C"}, {3, "A"}, {4, "D"}});
     std::vector<Ballot *> ballots = { p0,p1,p2,p3,p4,p5,p6,p7,p8,p9 };
 
-    TestableSTVElection election(3, false, ballots, candidates);
+    TestableSTVElection election(3, ballots, candidates);
     election.run();
     auto winners = election.getWinners();
     ASSERT_EQ(3u, winners.size());
@@ -256,7 +256,7 @@ TEST(STVElectionRunIntegrationTest, TieBreakEarliestFirstVoteWins) {
     Ballot *bc = new Ballot(2, {{0, "C"}});
     std::vector<Ballot *> ballots = { ba, bb, bc };
 
-    TestableSTVElection election(1, false, ballots, candidates);
+    TestableSTVElection election(1, ballots, candidates);
     election.run();
     auto winners = election.getWinners();
     ASSERT_EQ(1u, winners.size());
@@ -277,7 +277,7 @@ TEST(STVElectionRunIntegrationTest, SingleSeatClearWinner) {
     Ballot *b2 = new Ballot(2, {{0, "Cand 2"}, {1, "Cand 1"}, {2, "Cand 3"}});
     std::vector<Ballot *> ballots = { b0, b1, b2 };
 
-    TestableSTVElection election(1, false, ballots, candidates);
+    TestableSTVElection election(1, ballots, candidates);
     election.run();
 
     auto winners = election.getWinners();

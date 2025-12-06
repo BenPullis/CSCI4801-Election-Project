@@ -62,8 +62,18 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         // convert electionType to all lower case
         std::transform(electionType.begin(), electionType.end(), electionType.begin(), ::tolower);
 
+        // get number of seats
         std::getline(infile, line);
         numSeats = std::stoi(trim(line));
+
+        if (electionType == "stv") {
+            // figure out whether to shuffle ballots
+            std::getline(infile, line);
+            char shufB = static_cast<char>(std::tolower(
+                static_cast<unsigned char>(trim(line).at(0))));
+            isShuffleBallots = shufB == 'y';
+            std::cout << shufB << " " << isShuffleBallots;
+        }
 
         std::getline(infile, line);
         // Parse candidates
@@ -96,6 +106,9 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         std::getline(infile, line);
         std::getline(infile, line);
         std::getline(infile, line);
+        if (electionType == "stv") {
+            std::getline(infile, line);
+        }
     } 
 
     // Read ballot lines
@@ -134,7 +147,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         if (electionType != "stv" || static_cast<float>(numRanked) / candidates.size() >= .6) {
             Ballot* b = new Ballot(localId++, candidateRanking);
             ballots.push_back(b);
-        } else if (electionType == "stv" && static_cast<float>(numRanked) / candidates.size() < .6) {
+        } else {
             Ballot* b = new Ballot(localId++, candidateRanking);
             thrownOutBallots.push_back(b);
         }
@@ -173,6 +186,10 @@ void BallotHandler::handleFiles() {
 
             break;
         }
+    }
+
+    if (isShuffleBallots) {
+        ballots = shuffleBallots(ballots);
     }
 
     if (!thrownOutBallots.empty()) {

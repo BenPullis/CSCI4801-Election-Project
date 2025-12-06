@@ -1,7 +1,7 @@
 #include "STVElection.h"
 
-STVElection::STVElection(int nSeats, bool sb, std::vector<Ballot *>b, std::vector<Candidate *> c, BallotHandler *bh) 
-    : IElection(), shuffleBallots(sb), ballotHandler(bh)
+STVElection::STVElection(int nSeats, std::vector<Ballot *>b, std::vector<Candidate *> c) 
+    : IElection()
 {
     ballots = b;
     candidates = c;
@@ -231,10 +231,6 @@ std::string createCandidatesListString(const std::vector<Candidate *>& candidate
 
 
 void STVElection::run() {
-    if (shuffleBallots) {
-        ballots = ballotHandler->shuffleBallots(ballots);
-    }
-
     int numBallotsProcessed = 0; // used to break ties when eliminating candidates
     int algorithmPassNum = 0;
 

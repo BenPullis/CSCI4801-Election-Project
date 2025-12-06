@@ -36,11 +36,7 @@ int main(){
 
     IElection *election;
     if(electionType == "stv"){
-        cout << "Choose whether you would like to shuffle the ballots (Y/N): ";
-        string shuffleChoice;
-        cin >> shuffleChoice;
-        election = new STVElection(numSeats, shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
-            ballots, candidates, bh);
+        election = new STVElection(numSeats, ballots, candidates);
     }
     else if(electionType == "pv"){
         election = new PluralityElection(numSeats, ballots, candidates);

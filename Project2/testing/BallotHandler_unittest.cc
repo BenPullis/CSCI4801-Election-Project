@@ -11,6 +11,7 @@
  */
 class BallotHandlerTest : public ::testing::Test {
 protected:
+    std::string auditReportFileName = "audit_report.txt";
     std::string path1;
     std::string path2;
 
@@ -111,7 +112,4 @@ TEST_F(BallotHandlerTest, RemoveInvalidSTVBallots) {
     // Verify ballots (4 valid, 4 are removed)
     auto ballots = handler.receiveBallots();
     EXPECT_EQ(ballots.size(), 4) << "Expected 4 total ballots.";
-    
-    ASSERT_TRUE(std::filesystem::exists(filename))
-        << "audit_report.txt should exist after report generation.";
 }

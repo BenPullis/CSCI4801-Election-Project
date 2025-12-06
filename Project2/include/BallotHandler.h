@@ -23,6 +23,7 @@ private:
     std::vector<Candidate*> candidates;
     std::string electionType;
     int numSeats;
+    bool isShuffleBallots = false;
 
     /**
      * @brief Reads ballot data from a file.
