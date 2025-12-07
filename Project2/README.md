@@ -8,7 +8,7 @@ To Run:
 Go to Project1/src and run "make run"
 
 To Enter CSV Files:
-When prompted to enter CSV files use "../testing/fileName.csv" instead of "fileName.csv"
+Enter any key when prompted and then use the GUI to select the CSV files to use
 
 To Run Tests:
 Go to Project1/src and run "make test"
