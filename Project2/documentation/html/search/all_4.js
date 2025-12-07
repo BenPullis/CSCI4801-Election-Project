@@ -8,12 +8,13 @@ var searchData=
   ['getfirstvote_5',['getFirstVote',['../classCandidate.html#a982452ba6f8b0307138857f4f77f35ff',1,'Candidate']]],
   ['gethelp_6',['getHelp',['../classHelpWindow.html#a1b5e1c7b00ef610393ddc7b383b24c81',1,'HelpWindow']]],
   ['getid_7',['getId',['../classBallot.html#a1ff11d3400230f4837fdec904d7e66fd',1,'Ballot']]],
-  ['getinstance_8',['getinstance',['../classHelpWindow.html#a101d631ce12c3c3b736b065289bb4b7a',1,'HelpWindow::getInstance()'],['../classUserInterface.html#abed51436a2e41582681ffbe1a7658367',1,'UserInterface::getInstance()']]],
-  ['getloserslist_9',['getLosersList',['../classSTVElection.html#a5c71d5b0d14c62ecf3f315734ac01047',1,'STVElection']]],
-  ['getname_10',['getName',['../classCandidate.html#af862d92e21d66d74f1d5cae92937d3da',1,'Candidate']]],
-  ['getnumseats_11',['getNumSeats',['../classBallotHandler.html#ad9ac975e1a074c9484974ac5eb1a8c78',1,'BallotHandler']]],
-  ['getparty_12',['getParty',['../classCandidate.html#a459c7d0c4e5708ded61d1ad33182a1e3',1,'Candidate']]],
-  ['getpreference_13',['getPreference',['../classBallot.html#a3095eab2c315848468943708df8a0117',1,'Ballot']]],
-  ['getwindow_14',['getWindow',['../classUserInterface.html#ae0db4d72e4f239e27001efb9d91586ea',1,'UserInterface']]],
-  ['getwinnerslist_15',['getWinnersList',['../classIElection.html#ad643667e47465deefd8380aac23fe6f5',1,'IElection']]]
+  ['getinstance_8',['getinstance',['../classUserInterface.html#abed51436a2e41582681ffbe1a7658367',1,'UserInterface::getInstance()'],['../classHelpWindow.html#a101d631ce12c3c3b736b065289bb4b7a',1,'HelpWindow::getInstance()']]],
+  ['getismv_9',['getIsMV',['../classBallot.html#ad30ae6411f1b61a6c3678ce9b7e9cb14',1,'Ballot']]],
+  ['getloserslist_10',['getLosersList',['../classSTVElection.html#a5c71d5b0d14c62ecf3f315734ac01047',1,'STVElection']]],
+  ['getname_11',['getName',['../classCandidate.html#af862d92e21d66d74f1d5cae92937d3da',1,'Candidate']]],
+  ['getnumseats_12',['getNumSeats',['../classBallotHandler.html#ad9ac975e1a074c9484974ac5eb1a8c78',1,'BallotHandler']]],
+  ['getparty_13',['getParty',['../classCandidate.html#a459c7d0c4e5708ded61d1ad33182a1e3',1,'Candidate']]],
+  ['getpreference_14',['getPreference',['../classBallot.html#a3095eab2c315848468943708df8a0117',1,'Ballot']]],
+  ['getwindow_15',['getWindow',['../classUserInterface.html#ae0db4d72e4f239e27001efb9d91586ea',1,'UserInterface']]],
+  ['getwinnerslist_16',['getWinnersList',['../classIElection.html#ad643667e47465deefd8380aac23fe6f5',1,'IElection']]]
 ];

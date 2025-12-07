@@ -87,8 +87,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab02e18dfbbc7485439f3345c92ae7fb9" id="r_ab02e18dfbbc7485439f3345c92ae7fb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBallot.html#ab02e18dfbbc7485439f3345c92ae7fb9">Ballot</a> (int newId, std::map&lt; int, std::string &gt; rankings)</td></tr>
 <tr class="memdesc:ab02e18dfbbc7485439f3345c92ae7fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a <a class="el" href="classBallot.html" title="Represents the ballot of a single voter, including their ranked candidate preferences.">Ballot</a> with an ID and candidate rankings.  <br /></td></tr>
 <tr class="separator:ab02e18dfbbc7485439f3345c92ae7fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d2bb077ab88f24ac0696c11cb54a553" id="r_a4d2bb077ab88f24ac0696c11cb54a553"><td class="memItemLeft" align="right" valign="top"><a id="a4d2bb077ab88f24ac0696c11cb54a553" name="a4d2bb077ab88f24ac0696c11cb54a553"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Ballot</b> (int id, std::vector&lt; int &gt; votes)</td></tr>
+<tr class="memitem:a4d2bb077ab88f24ac0696c11cb54a553" id="r_a4d2bb077ab88f24ac0696c11cb54a553"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBallot.html#a4d2bb077ab88f24ac0696c11cb54a553">Ballot</a> (int id, std::vector&lt; int &gt; votes)</td></tr>
+<tr class="memdesc:a4d2bb077ab88f24ac0696c11cb54a553"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a <a class="el" href="classBallot.html" title="Represents the ballot of a single voter, including their ranked candidate preferences.">Ballot</a> with an ID and MV votes.  <br /></td></tr>
 <tr class="separator:a4d2bb077ab88f24ac0696c11cb54a553"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ff11d3400230f4837fdec904d7e66fd" id="r_a1ff11d3400230f4837fdec904d7e66fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBallot.html#a1ff11d3400230f4837fdec904d7e66fd">getId</a> ()</td></tr>
 <tr class="memdesc:a1ff11d3400230f4837fdec904d7e66fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the unique ballot ID.  <br /></td></tr>
@@ -102,8 +102,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c98993ad080601d16412788d0fd34df" id="r_a1c98993ad080601d16412788d0fd34df"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBallot.html#a1c98993ad080601d16412788d0fd34df">getCandidateRankings</a> ()</td></tr>
 <tr class="memdesc:a1c98993ad080601d16412788d0fd34df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the candidate ranking map.  <br /></td></tr>
 <tr class="separator:a1c98993ad080601d16412788d0fd34df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad30ae6411f1b61a6c3678ce9b7e9cb14" id="r_ad30ae6411f1b61a6c3678ce9b7e9cb14"><td class="memItemLeft" align="right" valign="top"><a id="ad30ae6411f1b61a6c3678ce9b7e9cb14" name="ad30ae6411f1b61a6c3678ce9b7e9cb14"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>getIsMV</b> () const</td></tr>
+<tr class="memitem:ad30ae6411f1b61a6c3678ce9b7e9cb14" id="r_ad30ae6411f1b61a6c3678ce9b7e9cb14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBallot.html#ad30ae6411f1b61a6c3678ce9b7e9cb14">getIsMV</a> () const</td></tr>
+<tr class="memdesc:ad30ae6411f1b61a6c3678ce9b7e9cb14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the ballot is meant for an MV election.  <br /></td></tr>
 <tr class="separator:ad30ae6411f1b61a6c3678ce9b7e9cb14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9826444deb5d07fec82b5181781dced" id="r_aa9826444deb5d07fec82b5181781dced"><td class="memItemLeft" align="right" valign="top"><a id="aa9826444deb5d07fec82b5181781dced" name="aa9826444deb5d07fec82b5181781dced"></a>
 std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getMVVotes</b> () const</td></tr>
@@ -131,7 +131,7 @@ std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m
 <div class="textblock"><p>Represents the ballot of a single voter, including their ranked candidate preferences. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab02e18dfbbc7485439f3345c92ae7fb9" name="ab02e18dfbbc7485439f3345c92ae7fb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab02e18dfbbc7485439f3345c92ae7fb9">&#9670;&#160;</a></span>Ballot()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab02e18dfbbc7485439f3345c92ae7fb9">&#9670;&#160;</a></span>Ballot() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,6 +173,51 @@ std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m
   </dd>
 </dl>
 <dl class="section note"><dt>Note</dt><dd>The initial preference is set to the lowest number in the ranking. </dd></dl>
+
+</div>
+</div>
+<a id="a4d2bb077ab88f24ac0696c11cb54a553" name="a4d2bb077ab88f24ac0696c11cb54a553"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2bb077ab88f24ac0696c11cb54a553">&#9670;&#160;</a></span>Ballot() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Ballot::Ballot </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::vector&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>votes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for a <a class="el" href="classBallot.html" title="Represents the ballot of a single voter, including their ranked candidate preferences.">Ballot</a> with an ID and MV votes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>used to initialize the ballotID. </td></tr>
+    <tr><td class="paramname">votes</td><td>A vector containing votes for each candidate. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -230,6 +275,34 @@ std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>m
 
 <p>Retrieves the unique ballot ID. </p>
 <dl class="section return"><dt>Returns</dt><dd>The ID of this ballot. </dd></dl>
+
+</div>
+</div>
+<a id="ad30ae6411f1b61a6c3678ce9b7e9cb14" name="ad30ae6411f1b61a6c3678ce9b7e9cb14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad30ae6411f1b61a6c3678ce9b7e9cb14">&#9670;&#160;</a></span>getIsMV()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Ballot::getIsMV </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks whether the ballot is meant for an MV election. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if it's an MV ballot, False otherwise. </dd></dl>
 
 </div>
 </div>
