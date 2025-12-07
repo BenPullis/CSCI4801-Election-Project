@@ -76,6 +76,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
     }
 
     std::string line;
+    bool skipExtraLine = false;
     if (first) {        
         // Read election type
         std::getline(infile, electionType);      // STV, PV, MV
@@ -84,16 +85,17 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
 
         std::getline(infile, line);
         numSeats = std::stoi(trim(line));
-
-        if (electionType == "stv") {
+        
+        std::getline(infile, line);
+        if (electionType == "stv" && line.length() == 1) {
             // figure out whether to shuffle ballots
-            std::getline(infile, line);
             isShuffleBallots = static_cast<char>(std::tolower(
                 static_cast<unsigned char>(trim(line).at(0)))) == 'y';
+            skipExtraLine = true;
+            std::getline(infile, line);
         }
 
         // Parse candidates from the header line
-        std::getline(infile, line);
         parseCandidates(line);
 
         if (candidates.empty()) {
@@ -106,7 +108,7 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         std::getline(infile, line);
         std::getline(infile, line);
         std::getline(infile, line);
-        if (electionType == "stv") {
+        if (skipExtraLine) {
             std::getline(infile, line);
         }
     } 
