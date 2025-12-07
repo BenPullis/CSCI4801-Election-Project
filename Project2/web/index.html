@@ -1,0 +1,42 @@
+Enter in Ballots here (you can submit multiple files):
+<form id="uploadForm">
+  <input type="file" name="myfiles" multiple accept=".csv"> <br>
+  <button type="submit" onclick="exitTab()">Upload</button>
+</form>
+Pressing "Upload" will exit the page, afterwards return back to the command-line!
+
+<script>
+  function exitTab() {
+      setTimeout(() => {
+          window.close();
+      }, 1000);
+  }
+  </script>
+
+<script>
+const form = document.getElementById('uploadForm');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const files = form.myfiles.files;
+    if (files.length === 0) {
+        return;
+    }
+
+    const formData = new FormData();
+    for (const file of files) {
+        formData.append('myfiles', file);
+    }
+
+    try {
+        const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        const text = await response.text();
+    } catch (err) {
+    }
+});
+</script>
