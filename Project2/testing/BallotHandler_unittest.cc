@@ -3,6 +3,7 @@
 #include "Ballot.h"
 #include "Candidate.h"
 #include <sstream>
+#include <filesystem>
 #include <algorithm>
 
 /**
@@ -10,6 +11,7 @@
  */
 class BallotHandlerTest : public ::testing::Test {
 protected:
+    std::string auditReportFileName = "audit_report.txt";
     std::string path1;
     std::string path2;
     std::string path3;
@@ -50,10 +52,10 @@ TEST_F(BallotHandlerTest, MVBallotsAreParsedCorrectly) {
 }
 
 /**
- * @test Ensure handleFiles() properly loads candidates and ballots
+ * @test Ensure handleFiles() properly parses header and ballots
  *       from multiple files.
  */
-TEST_F(BallotHandlerTest, HandleFilesAndCandidates) {
+TEST_F(BallotHandlerTest, TestHeaderParsing) {
     BallotHandler handler;
 
     // Simulate user entering file info via stdin
@@ -64,6 +66,11 @@ TEST_F(BallotHandlerTest, HandleFilesAndCandidates) {
     handler.handleFiles();
 
     std::cin.rdbuf(cinbuf);
+
+    // Verify election type and number of seats
+    EXPECT_EQ("pv", handler.getElectionType()) << "Expected 'pv' election type";
+    // Verify number of seats
+    EXPECT_EQ(1, handler.getNumSeats()) << "Expected 1 seat";
 
     // Verify candidates
     auto candidates = handler.getCandidates();
@@ -115,4 +122,24 @@ TEST_F(BallotHandlerTest, DestructorCleansMemory) {
 
     delete handler; // destructor should safely free memory
     SUCCEED();
+}
+
+/**
+ * @test Ensure invalid STV ballots are removed correctly.
+ */
+TEST_F(BallotHandlerTest, RemoveInvalidSTVBallots) {
+    BallotHandler handler;
+
+    // Simulate user entering file info via stdin
+    auto cinbuf = std::cin.rdbuf();
+    std::istringstream input("1\n../testing/ballots4.csv\n");
+    std::cin.rdbuf(input.rdbuf());
+
+    handler.handleFiles();
+
+    std::cin.rdbuf(cinbuf);
+
+    // Verify ballots (4 valid, 4 are removed)
+    auto ballots = handler.receiveBallots();
+    EXPECT_EQ(ballots.size(), 4) << "Expected 4 total ballots.";
 }

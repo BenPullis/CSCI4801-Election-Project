@@ -19,11 +19,13 @@ class Candidate;
 class BallotHandler {
 private:
     std::vector<Ballot*> ballots;
+    std::vector<Ballot*> thrownOutBallots;
     std::vector<Candidate*> candidates;
     std::string electionType;
     int numSeats;
 
     void parseCandidates(const std::string& line);
+    bool isShuffleBallots = false;
 
     /**
      * @brief Reads ballot data from a file.
@@ -92,7 +94,26 @@ public:
      */
     std::vector<Candidate*> getCandidates() const;
 
+    /**
+     * @brief Retrieves the election type.
+     * 
+     * @return The election type as a string.
+     */
+    std::string getElectionType() const { return electionType; }
+
+    /**
+     * @brief Retrieves the number of seats.
+     * 
+     * @return The number of seats as an integer.
+     */
     int getNumSeats() const { return numSeats; }
+
+    /**
+     * @brief Creates a new file containing the thrown out ballots.
+     *
+     * @return N/A
+     */
+    void thrownOutBallotsFile();
 };
 
 #endif // BALLOTHANDLER_H

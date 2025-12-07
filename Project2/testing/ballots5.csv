@@ -1,5 +1,12 @@
-MV
-2
-"[Alice, PartyA]","[Bob, PartyB]","[Charlie, PartyC]"
-1,,1
-,1,1
+STV
+3
+N
+"[Shana, Green]","[Jody, Republican]","[Ahmed, Independent]","[Mai, Democrat]","[Joe, Socialist]","[Alex, New Socialists]"
+1,,2,,3,
+3,2,1,4,6,5
+1,2,,,3,4
+4,1,,2,,3
+1,,2,,3,
+1,,2,,3,
+1,,2,,3,
+1,2,3,4,5,6

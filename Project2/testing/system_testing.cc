@@ -13,8 +13,8 @@
 
 class TestableSTVElection : public STVElection {
     public:
-        TestableSTVElection(int nSeats, bool sb, std::vector<Ballot *> b, std::vector<Candidate *> c, BallotHandler *bh)
-            : STVElection(nSeats, sb, b, c, bh)
+        TestableSTVElection(int nSeats, std::vector<Ballot *> b, std::vector<Candidate *> c)
+            : STVElection(nSeats, b, c)
         {}
         std::vector<Candidate *> getWinners() { return getWinnersList(); }
         std::vector<Candidate *> getLosers() { return getLosersList(); }
@@ -57,7 +57,7 @@ TEST(PluralitySystemTest, PluralityRunThrough) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
 
@@ -133,7 +133,7 @@ TEST(PluralitySystemTest, MultipleCandidatesPlurality) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
 
@@ -211,7 +211,7 @@ TEST(PluralitySystemTest, PluralityTie) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
 
@@ -292,7 +292,7 @@ TEST(STVSystemTest, STVRunThrough) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), 
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), 
         std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
@@ -318,7 +318,7 @@ TEST(STVSystemTest, STVRunThrough) {
     EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
 
     // Run a Plurality Election based off of the previously created ballots and candidates.
-    TestableSTVElection election(1, false, ballots, candidates, &handler);
+    TestableSTVElection election(1, ballots, candidates);
 
     election.run();
 
@@ -388,7 +388,7 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), 
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), 
         std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
@@ -414,7 +414,7 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
     EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
 
     // Run a Plurality Election based off of the previously created ballots and candidates.
-    TestableSTVElection election(2, false, ballots, candidates, &handler);
+    TestableSTVElection election(2, ballots, candidates);
 
     election.run();
 
@@ -484,7 +484,7 @@ TEST(STVSystemTest, STVTie) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), 
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), 
         std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
@@ -510,7 +510,7 @@ TEST(STVSystemTest, STVTie) {
     EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
 
     // Run a Plurality Election based off of the previously created ballots and candidates.
-    TestableSTVElection election(1, false, ballots, candidates, &handler);
+    TestableSTVElection election(1, ballots, candidates);
 
     election.run();
 

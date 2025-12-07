@@ -37,7 +37,7 @@ TEST(GetHelpUnitTests, STVCorrectPrint) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
 }
 
 // Test that ensures you can access multiple help pages on the help menu.
@@ -63,8 +63,8 @@ TEST(GetHelpUnitTests, MultipleCorrectPrint) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
-    EXPECT_NE(output.find("The Plurality election system is an election system where the candidate(s) with the most votes win."), std::string::npos) << "Expected Plurality help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Plurality election system allows votes to select a single candidates, and the candidate(s) with the most votes win."), std::string::npos) << "Expected Plurality help text.\n";
 }
 
 // Test that ensures you can exit right away.
@@ -90,7 +90,7 @@ TEST(GetHelpUnitTests, ExitTest) {
 
     std::string output = captured_output.str();
 
-    EXPECT_EQ(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Did not expect STV Help text.\n" << output;
-    EXPECT_EQ(output.find("The Plurality election system is an election system where the candidate(s) with the most votes win."), std::string::npos) << "Did not expect Plurality Help text.\n";
+    EXPECT_EQ(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Did not expect STV Help text.\n" << output;
+    EXPECT_EQ(output.find("The Plurality election system allows votes to select a single candidates, and the candidate(s) with the most votes win."), std::string::npos) << "Did not expect Plurality Help text.\n";
 
 }

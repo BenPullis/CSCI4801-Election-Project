@@ -21,82 +21,27 @@ int main(){
     cout << "------------------------\n\n" << endl;
 
     string input;
-    int numSeats;
-    cout << "First, Enter The Number Of Seats For The Election Or 'Help' for Further Help: ";
-
-    while(true){
-        cin >> input;
-        if(input == "Help" || input == "help"){
-            help.getHelp();
-            cout << "Enter The Number Of Seats For The Election Or 'Help' for Further Help: ";
-        }
-        else{
-            try{
-                numSeats = stoi(input);
-
-                if(numSeats > 0){
-                    break;
-                }
-                else{
-                    cout << "Number Of Seats Must Be Greater Than 0, Please Try Again: ";
-                }
-            }
-            catch(invalid_argument){
-                cout << "Invalid Input, Please Try Again: ";
-            }
-            catch(out_of_range){
-                cout << "Input Too Large, Please Try Again: ";
-            }
-        }
+    cout << "Type 'Help' for Further Help, or press any key to continue election: ";
+    cin >> input;
+    if(input == "Help" || input == "help"){
+        help.getHelp();
     }
 
-    cout << "Number of seats set to: " << numSeats << endl;
-
-
-
     BallotHandler *bh = new BallotHandler();
-
     bh->handleFiles();
-
+    std::string electionType = bh->getElectionType();
+    int numSeats = bh->getNumSeats();
     vector<Ballot*> ballots = bh->receiveBallots();
 
     vector<Candidate*> candidates = bh->getCandidates();
 
-    cout << "Now Choose The Type Of Election You Would Like, 'STV', 'Plurality', 'MV', Or 'Help' for Further Help: ";
     IElection *election;
-
-    while (true) {
-        cin >> input;
-
-        if (input == "Help" || input == "help") {
-            help.getHelp();
-            cout << "Choose The Type Of Election You Would Like, 'STV', 'Plurality', 'MV', Or 'Help' for Further Help: ";
-            continue;
-        }
-
-        if (input == "STV" || input == "stv" || input == "Stv") {
-            cout << "Choose whether you would like to shuffle the ballots (Y/N): ";
-            string shuffleChoice;
-            cin >> shuffleChoice;
-
-            election = new STVElection(
-                numSeats,
-                shuffleChoice == "y" || shuffleChoice == "Y" || shuffleChoice == "yes" || shuffleChoice == "Yes",
-                ballots, candidates, bh
-            );
-            break;
-        }
-        else if (input == "PLURALITY" || input == "plurality" || input == "Plurality") {
-            election = new PluralityElection(numSeats, ballots, candidates);
-            break;
-        }
-        else if (input == "MV" || input == "mv" || input == "Mv") {
-            election = new MVElection(numSeats, ballots, candidates);
-            break;
-        }
-        else {
-            cout << "Invalid Input, Please Try Again: ";
-        }
+    if (electionType == "stv"){
+        election = new STVElection(numSeats, ballots, candidates);
+    } else if (electionType == "pv"){
+        election = new PluralityElection(numSeats, ballots, candidates);
+    } else if (electionType == "mv") {
+        election = new MVElection(numSeats, ballots, candidates);
     }
 
 

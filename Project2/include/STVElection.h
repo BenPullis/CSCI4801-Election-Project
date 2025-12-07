@@ -21,13 +21,11 @@ class STVElection : public IElection {
         /**
          * @brief Constructor for STVElection.
          * @param nSeats Number of seats to be filled in the election.
-         * @param shuffleBallots Boolean indicating whether to shuffle ballots.
          * @param ballots Vector of pointers to Ballot objects representing the ballots cast in the election.
          * @param candidates Vector of pointers to Candidate objects representing the candidates in the election.
          * @param ballotHandler Pointer to a BallotHandler object for managing ballot operations.
          */
-        STVElection(int nSeats, bool shuffleBallots,
-            std::vector<Ballot *> ballots, std::vector<Candidate *> candidates, BallotHandler *ballotHandler);
+        STVElection(int nSeats, std::vector<Ballot *> ballots, std::vector<Candidate *> candidates);
 
         /**
          * @brief Destructor for STVElection.
@@ -56,9 +54,7 @@ class STVElection : public IElection {
     private:
         std::unordered_map<std::string, int> candidatePiles;
         int droopQuota;
-        bool shuffleBallots;
         std::vector<Candidate *> losersList;
-        BallotHandler *ballotHandler;
 
         /**
          * @brief Calculates the Droop quota for the election.
