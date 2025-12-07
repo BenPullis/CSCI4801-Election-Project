@@ -23,8 +23,6 @@ private:
     std::vector<Candidate*> candidates;
     std::string electionType;
     int numSeats;
-
-    void parseCandidates(const std::string& line);
     bool isShuffleBallots = false;
 
     /**
