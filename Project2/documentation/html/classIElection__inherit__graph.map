@@ -1,0 +1,9 @@
+<map id="IElection" name="IElection">
+<area shape="rect" id="Node000001" title="Abstract class for an election. Should be implemented concretely with both STV and Plurality." alt="" coords="149,5,228,31"/>
+<area shape="rect" id="Node000002" href="$classMVElection.html" title=" " alt="" coords="5,79,100,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,39,76,81,74,76,154,34"/>
+<area shape="rect" id="Node000003" href="$classPluralityElection.html" title=" " alt="" coords="125,79,253,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,44,191,79,186,79,186,44"/>
+<area shape="rect" id="Node000004" href="$classSTVElection.html" title="Class representing a Single Transferable Vote (STV) election." alt="" coords="277,79,375,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="224,34,305,76,302,81,221,39"/>
+</map>

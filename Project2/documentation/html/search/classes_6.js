@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stvelection_0',['STVElection',['../class_s_t_v_election.html',1,'']]]
+  ['pluralityelection_0',['PluralityElection',['../classPluralityElection.html',1,'']]]
 ];

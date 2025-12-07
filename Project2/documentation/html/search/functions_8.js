@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['trim_0',['trim',['../class_ballot_handler.html#a761973613ca72d11164193bb0b12b333',1,'BallotHandler']]]
+  ['parsecandidates_0',['parseCandidates',['../classBallotHandler.html#a2538c979b9e1a61a2ec7fe9a455e819f',1,'BallotHandler']]]
 ];

@@ -1,5 +1,19 @@
 var searchData=
 [
-  ['handlefiles_0',['handleFiles',['../class_ballot_handler.html#a1755bd4a0eff4028876808c33e9cea3c',1,'BallotHandler']]],
-  ['helpwindow_1',['HelpWindow',['../class_help_window.html#a2b7a462b4cb7876cd597efe4c52a3da7',1,'HelpWindow::HelpWindow()'],['../class_help_window.html#a0b7be0a8c883d2ebed3439a5524d4e5f',1,'HelpWindow::HelpWindow(HelpWindow const &amp;)']]]
+  ['generatereport_0',['generateReport',['../classAuditReport.html#aa390294668a000024463ac0ddb1279b9',1,'AuditReport']]],
+  ['getcandidatecounts_1',['getCandidateCounts',['../classMVElection.html#afc45a91d3f85527e8a9fb7258e10e6bb',1,'MVElection']]],
+  ['getcandidaterankings_2',['getCandidateRankings',['../classBallot.html#a1c98993ad080601d16412788d0fd34df',1,'Ballot']]],
+  ['getcandidates_3',['getCandidates',['../classBallotHandler.html#a86ecbc856fce8c2eb14d2edb54ce9994',1,'BallotHandler']]],
+  ['getelectiontype_4',['getElectionType',['../classBallotHandler.html#af0d3dd4d611786b73b897ffd77da015f',1,'BallotHandler']]],
+  ['getfirstvote_5',['getFirstVote',['../classCandidate.html#a982452ba6f8b0307138857f4f77f35ff',1,'Candidate']]],
+  ['gethelp_6',['getHelp',['../classHelpWindow.html#a1b5e1c7b00ef610393ddc7b383b24c81',1,'HelpWindow']]],
+  ['getid_7',['getId',['../classBallot.html#a1ff11d3400230f4837fdec904d7e66fd',1,'Ballot']]],
+  ['getinstance_8',['getinstance',['../classHelpWindow.html#a101d631ce12c3c3b736b065289bb4b7a',1,'HelpWindow::getInstance()'],['../classUserInterface.html#abed51436a2e41582681ffbe1a7658367',1,'UserInterface::getInstance()']]],
+  ['getloserslist_9',['getLosersList',['../classSTVElection.html#a5c71d5b0d14c62ecf3f315734ac01047',1,'STVElection']]],
+  ['getname_10',['getName',['../classCandidate.html#af862d92e21d66d74f1d5cae92937d3da',1,'Candidate']]],
+  ['getnumseats_11',['getNumSeats',['../classBallotHandler.html#ad9ac975e1a074c9484974ac5eb1a8c78',1,'BallotHandler']]],
+  ['getparty_12',['getParty',['../classCandidate.html#a459c7d0c4e5708ded61d1ad33182a1e3',1,'Candidate']]],
+  ['getpreference_13',['getPreference',['../classBallot.html#a3095eab2c315848468943708df8a0117',1,'Ballot']]],
+  ['getwindow_14',['getWindow',['../classUserInterface.html#ae0db4d72e4f239e27001efb9d91586ea',1,'UserInterface']]],
+  ['getwinnerslist_15',['getWinnersList',['../classIElection.html#ad643667e47465deefd8380aac23fe6f5',1,'IElection']]]
 ];
