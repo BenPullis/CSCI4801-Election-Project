@@ -19,7 +19,7 @@ protected:
     void SetUp() override {
         path1 = "../testing/ballots1.csv";
         path2 = "../testing/ballots2.csv";
-        path3 = "../testing/ballots5.csv";
+        path3 = "../testing/ballots6.csv";
     }
 };
 

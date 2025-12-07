@@ -127,15 +127,15 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
         fields.resize(candidates.size(), "");
 
         Ballot* b;
+        int numRanked = 0; // for STV
 
         if (electionType == "stv" || electionType == "pv") {
 
             std::map<int, std::string> candidateRanking;
-            int numRanked = 0;
             for (size_t i = 0; i < candidates.size(); ++i) {
-                if (!ranks[i].empty()) {
+                if (!fields[i].empty()) {
                     try {
-                        int rank = std::stoi(ranks[i]);
+                        int rank = std::stoi(fields[i]);
                         candidateRanking[rank] = candidates[i]->getName();
                         numRanked++;
                     } catch (const std::exception&) {
