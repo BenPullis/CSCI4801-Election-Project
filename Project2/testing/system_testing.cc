@@ -57,7 +57,7 @@ TEST(PluralitySystemTest, PluralityRunThrough) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
 
@@ -133,7 +133,7 @@ TEST(PluralitySystemTest, MultipleCandidatesPlurality) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
 
@@ -211,7 +211,7 @@ TEST(PluralitySystemTest, PluralityTie) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
 
@@ -292,7 +292,7 @@ TEST(STVSystemTest, STVRunThrough) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), 
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), 
         std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
@@ -388,7 +388,7 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), 
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), 
         std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
@@ -484,7 +484,7 @@ TEST(STVSystemTest, STVTie) {
 
     std::string output = captured_output.str();
 
-    EXPECT_NE(output.find("The STV (Single Transferable Voting) election system allows candidates to be ranked"), 
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), 
         std::string::npos) << "Expected STV help text.\n";
 
     BallotHandler handler;
