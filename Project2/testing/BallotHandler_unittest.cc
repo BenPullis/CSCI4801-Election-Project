@@ -106,7 +106,17 @@ TEST_F(BallotHandlerTest, RemoveInvalidSTVBallots) {
     // Verify ballots (4 valid, 4 are removed)
     auto ballots = handler.receiveBallots();
     EXPECT_EQ(ballots.size(), 4) << "Expected 4 total ballots.";
+
+    // Get current date
+    std::time_t now = std::time(nullptr);
+    std::tm* local = std::localtime(&now);
+    std::string date = std::to_string(local->tm_mon + 1) +
+                       std::to_string(local->tm_mday) +
+                       std::to_string(local->tm_year + 1900);
     
+    // Ensure out-ballots are being logged in a csv file.
+    std::string filename = "STVBallotErrors" + date + ".csv";
+
     ASSERT_TRUE(std::filesystem::exists(filename))
         << "audit_report.txt should exist after report generation.";
 }

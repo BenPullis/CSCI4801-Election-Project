@@ -7,12 +7,12 @@
 #include "Ballot.h"
 #include "Candidate.h"
 #include "BallotHandler.h"
+#include "UserInterface.h"
 #include <vector>
 
 using namespace std;
 
 int main(){
-    
     HelpWindow &help = HelpWindow::getInstance();
 
     cout << "------------------------" << endl;

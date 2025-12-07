@@ -1,6 +1,7 @@
 #include "BallotHandler.h"
 #include "Ballot.h"
 #include "Candidate.h"
+#include "UserInterface.h"
 
 #include <iostream>
 #include <fstream>
@@ -149,34 +150,39 @@ void BallotHandler::readFile(const std::string& fileName, bool first) {
  * Prompts the user for the number of files and their names, then reads each file using readFile.
  */
 void BallotHandler::handleFiles() {
-    int numFiles;
-    std::cout << "Enter the number of ballot files: ";
-    std::cin >> numFiles;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    UserInterface &ui = UserInterface::getInstance();
+    ui.getWindow();
+
+    std::cout << "Waiting for CSV files to appear in uploads/ folder..." << std::endl;
+
+    std::vector<std::string> uploadedFiles;
+
+    while (uploadedFiles.empty()) {
+        uploadedFiles.clear();
+        for (const auto &entry : std::filesystem::directory_iterator("../web/uploads")) {
+            if (entry.is_regular_file() && entry.path().extension() == ".csv") {
+                uploadedFiles.push_back(entry.path().string());
+            }
+        }
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 
     bool first = true;
-    for (int i = 0; i < numFiles; ++i) {
-        std::string fileName;
-        while (true) {
-            std::cout << "Enter file name " << (i + 1) << ": ";
-            std::getline(std::cin, fileName);
-            fileName = trim(fileName);
-            if (fileName.empty()) continue;
-
-            if (!std::filesystem::exists(fileName)) {
-                std::cout << "File does not exist, try again!";
-                continue;
-            }
-
-            readFile(fileName, first);
-            first = false;
-
-            break;
-        }
+    for (const auto &filePath : uploadedFiles) {
+        readFile(filePath, first);
+        first = false;
     }
 
     if (!thrownOutBallots.empty()) {
         thrownOutBallotsFile();
+    }
+
+    for (const auto &entry : std::filesystem::directory_iterator("../web/uploads")) {
+        try {
+            std::filesystem::remove(entry.path());
+        } catch (const std::exception &e) {
+            std::cerr << "Failed to delete " << entry.path() << ": " << e.what() << std::endl;
+        }
     }
 }
 
