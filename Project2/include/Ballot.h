@@ -30,6 +30,11 @@ public:
     Ballot(int newId, std::map<int, std::string> rankings)
         : id(newId), preference(rankings.begin()->first), candidateRankings(rankings) {}
 
+    /**
+     * @brief Constructor for a Ballot with an ID and MV votes.
+     * @param id used to initialize the ballotID.
+     * @param votes A vector containing votes for each candidate.
+     */
     Ballot(int id, std::vector<int> votes)
         : id(id), isMV(true), mvVotes(votes) {}
 
@@ -58,6 +63,10 @@ public:
      */
     std::map<int, std::string> getCandidateRankings() { return candidateRankings; }
 
+    /**
+     * @brief Checks whether the ballot is meant for an MV election.
+     * @return True if it's an MV ballot, False otherwise.
+     */
     bool getIsMV() const { return isMV; }
 
     std::vector<int> getMVVotes() const { return mvVotes; }
