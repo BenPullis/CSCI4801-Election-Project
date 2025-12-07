@@ -28,6 +28,15 @@ private:
     bool isShuffleBallots = false;
 
     /**
+     * @brief Parses candidates from a csv file.
+     *
+     * Helper function to extract candidates for readFile.
+     *
+     * @param str The line with the candidates and parties.
+     */
+    void parseCandidates(const std::string& line);
+
+    /**
      * @brief Reads ballot data from a file.
      *
      * If it's the first file, parses the header to extract candidates. Then reads and parses
