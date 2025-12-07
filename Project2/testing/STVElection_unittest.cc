@@ -24,7 +24,7 @@ class STVElectionTest : public ::testing::Test {
             cand5 = new Candidate("Cand 5", "Party 2");
             candList = { cand1, cand2, cand3, cand4, cand5 };
             for (int i = 0; i < 100; i++) {
-                emptyBallots.push_back(new Ballot(i, {}));
+                emptyBallots.push_back(new Ballot(i, std::map<int, std::string>{}));
             }
         }
 

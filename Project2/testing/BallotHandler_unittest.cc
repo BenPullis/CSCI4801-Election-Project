@@ -17,7 +17,7 @@ protected:
     void SetUp() override {
         path1 = "../testing/ballots1.csv";
         path2 = "../testing/ballots2.csv";
-        path3 = "../testing/ballots4.csv";
+        path3 = "../testing/ballots5.csv";
     }
 };
 
@@ -38,7 +38,7 @@ TEST_F(BallotHandlerTest, MVBallotsAreParsedCorrectly) {
     EXPECT_EQ(candidates[2]->getName(), "Charlie");
 
     auto ballots = handler.receiveBallots();
-    ASSERT_EQ(ballots.size(), 1) << "Expected exactly one MV Ballot";
+    ASSERT_EQ(ballots.size(), 2) << "Expected exactly two MV Ballot";
 
     Ballot* b = ballots[0];
     const std::vector<int>& votes = b->getMVVotes();
