@@ -1,0 +1,20 @@
+We could not really get any C++ GUI library to work on the CSE Labs machines,
+all of them required external libraries with countless dependencies, and
+these would often require sudo-level permissions to install, or require us
+to significantly bloat our project and run into walls. So we ultimately
+decided to make a small Node.js server to handle UI, while still having our
+C++ perform the most amount of logic possible.
+
+Important components:
+index.html file:
+Takes in the user's CSV files, sends a POST request to the Node.js server
+containing all of the CSV files the user submitted.
+
+server.js file:
+Contains the logic to interact between index.html and the uploads folder,
+using the express and multer node packages to upload the .csv files to the
+uploads folder.
+
+uploads folder:
+The C++ code scans the uploads folder for new .csv files, so the instance
+the user submits their .csv files, the C++ parsing picks back up.

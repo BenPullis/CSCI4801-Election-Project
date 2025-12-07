@@ -215,7 +215,9 @@ void BallotHandler::handleFiles() {
 
     for (const auto &entry : std::filesystem::directory_iterator("../web/uploads")) {
         try {
-            std::filesystem::remove(entry.path());
+            if (entry.path().extension() == ".csv") {
+                std::filesystem::remove(entry.path());
+            }
         } catch (const std::exception &e) {
             std::cerr << "Failed to delete " << entry.path() << ": " << e.what() << std::endl;
         }

@@ -15,7 +15,7 @@ class UserInterface {
         static UserInterface& getInstance();
 
         /**
-         * @brief Creates webview containing the user interface.
+         * @brief Starts node.js server and opens webpage (see /web directory in project root) containing the user interface.
          */
         void getWindow();
 
