@@ -5,8 +5,6 @@ Enter in Ballots here (you can submit multiple files):
 </form>
 Pressing "Upload" will exit the page, afterwards return back to the command-line!
 
-<div id="status"></div>
-
 <script>
   function exitTab() {
       setTimeout(() => {
@@ -17,14 +15,12 @@ Pressing "Upload" will exit the page, afterwards return back to the command-line
 
 <script>
 const form = document.getElementById('uploadForm');
-const statusDiv = document.getElementById('status');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const files = form.myfiles.files;
     if (files.length === 0) {
-        statusDiv.textContent = 'Please select files.';
         return;
     }
 
