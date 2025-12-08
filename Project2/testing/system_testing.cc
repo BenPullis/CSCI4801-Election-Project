@@ -629,7 +629,7 @@ TEST(MVSystemTest, MVRunThrough) {
 
     // Verify candidates
     auto candidates = handler.getCandidates();
-    ASSERT_EQ(candidates.size(), 6) << "Expected 3 candidates from ballots1.csv header.";
+    ASSERT_EQ(candidates.size(), 6) << "Expected 6 candidates from ballots1.csv header.";
     EXPECT_EQ(candidates[0]->getName(), "Shana");
     EXPECT_EQ(candidates[1]->getName(), "Jody");
     EXPECT_EQ(candidates[2]->getName(), "Ahmed");
@@ -639,7 +639,7 @@ TEST(MVSystemTest, MVRunThrough) {
 
     // Verify ballots (2 from first file, 1 from second)
     auto ballots = handler.receiveBallots();
-    EXPECT_EQ(ballots.size(), 16) << "Expected 3 total ballots.";
+    EXPECT_EQ(ballots.size(), 16) << "Expected 16 total ballots.";
 
     // Run a Plurality Election based off of the previously created ballots and candidates.
     TestableMVElection election(1, ballots, candidates);
@@ -709,7 +709,7 @@ TEST(MVSystemTest, MVTie) {
 
     // Verify candidates
     auto candidates = handler.getCandidates();
-    ASSERT_EQ(candidates.size(), 6) << "Expected 3 candidates from ballots1.csv header.";
+    ASSERT_EQ(candidates.size(), 6) << "Expected 6 candidates from ballots1.csv header.";
     EXPECT_EQ(candidates[0]->getName(), "Shana");
     EXPECT_EQ(candidates[1]->getName(), "Jody");
     EXPECT_EQ(candidates[2]->getName(), "Ahmed");
