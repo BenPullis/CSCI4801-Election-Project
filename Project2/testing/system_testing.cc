@@ -10,6 +10,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "MVElection.h"
 
 namespace fs = std::filesystem;
 
@@ -28,6 +29,14 @@ class TestablePluralityElection : public PluralityElection {
             : PluralityElection(nSeats, b, c)
         {}
         std::vector<Candidate *> getWinners() { return getWinnersList(); }
+};
+
+class TestableMVElection : public MVElection {
+    public:
+    TestableMVElection(int nSeats, std::vector<Ballot *>b, std::vector<Candidate *> c)
+        : MVElection(nSeats, b, c)
+    {}
+    std::vector<Candidate *> getWinners() { return getWinnersList(); }
 };
 
 
@@ -379,7 +388,7 @@ TEST(STVSystemTest, STVRunThrough) {
         << "Missing the correct non-elected candidates";
 }
 
-// Full STV system test WITH multiple candidates.
+// // Full STV system test WITH multiple candidates.
 TEST(STVSystemTest, MultipleCandidatesSTV) {
     // Test out the Help Window.
     std::string fake_input_data = "1\nok\nexit\n";
@@ -479,7 +488,7 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
         << "Missing the correct non-elected candidates";
 }
 
-// Full STV system test WITH tied candidates.
+// // Full STV system test WITH tied candidates.
 TEST(STVSystemTest, STVTie) {
     // Test out the Help Window.
     std::string fake_input_data = "1\nok\nexit\n";
@@ -569,4 +578,173 @@ TEST(STVSystemTest, STVTie) {
         << "Missing the correct elected candidate";
     EXPECT_NE(content.find("Non-Elected Candidates: Charlie, Bob"), std::string::npos)
         << "Missing the correct non-elected candidates";
+}
+
+
+
+// Full MV system test hitting every component of the system
+// > HelpWindow
+// > BallotHandler (by extension Ballot and Candidate)
+// > STVElection
+// > AuditReport
+TEST(MVSystemTest, MVRunThrough) {
+    // Test out the Help Window.
+    std::string fake_input_data = "1\nok\nexit\n";
+    std::istringstream fake_input(fake_input_data);
+
+    std::streambuf* old_cin = std::cin.rdbuf();
+    std::streambuf* old_cout = std::cout.rdbuf();
+
+    std::cin.rdbuf(fake_input.rdbuf());
+
+    std::ostringstream captured_output;
+    std::cout.rdbuf(captured_output.rdbuf());
+
+    HelpWindow& help = HelpWindow::getInstance();
+    help.getHelp();
+
+    ASSERT_NO_FATAL_FAILURE(HelpWindow::getInstance());
+
+    std::cin.rdbuf(old_cin);
+    std::cout.rdbuf(old_cout);
+
+    std::string output = captured_output.str();
+
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+
+    BallotHandler handler;
+
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots7.csv";
+    fs::path dest = "../web/uploads/ballots7.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+    src = "../testing/ballots8.csv";
+    dest = "../web/uploads/ballots8.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
+    handler.handleFiles();
+    std::cin.rdbuf(cinbuf);
+
+    // Verify candidates
+    auto candidates = handler.getCandidates();
+    ASSERT_EQ(candidates.size(), 6) << "Expected 3 candidates from ballots1.csv header.";
+    EXPECT_EQ(candidates[0]->getName(), "Shana");
+    EXPECT_EQ(candidates[1]->getName(), "Jody");
+    EXPECT_EQ(candidates[2]->getName(), "Ahmed");
+    EXPECT_EQ(candidates[3]->getName(), "Mai");
+    EXPECT_EQ(candidates[4]->getName(), "Joe");
+    EXPECT_EQ(candidates[5]->getName(), "Alex");
+
+    // Verify ballots (2 from first file, 1 from second)
+    auto ballots = handler.receiveBallots();
+    EXPECT_EQ(ballots.size(), 16) << "Expected 3 total ballots.";
+
+    // Run a Plurality Election based off of the previously created ballots and candidates.
+    TestableMVElection election(1, ballots, candidates);
+
+    election.run();
+
+    std::vector<Candidate*> winners = election.getWinners();
+
+    ASSERT_EQ(winners.size(), 1) << "Expected exactly one winner.";
+    EXPECT_EQ(winners[0]->getName(), "Shana") << "Expected Shana to win.";
+
+    // Check to see if audit report exists.
+    EXPECT_TRUE(std::filesystem::exists("audit_report.txt")) << "Verify audit report was generated.";
+    std::ifstream infile("audit_report.txt");
+    ASSERT_TRUE(infile.is_open()) << "Unable to open audit_report.txt for reading.";
+
+    std::string content((std::istreambuf_iterator<char>(infile)),
+                         std::istreambuf_iterator<char>());
+    infile.close();
+
+    // Ensure correct contents written to audit report.
+    EXPECT_NE(content.find("Election"), std::string::npos)
+        << "Missing 'Election' header.";
+    EXPECT_NE(content.find("Date of the election:"), std::string::npos)
+        << "Missing 'Date of the election:' header.";
+    EXPECT_NE(content.find("Elected Candidates: Shana"), std::string::npos)
+        << "Missing the correct elected candidate";
+}
+
+// Full MV system test WITH tied candidates.
+TEST(MVSystemTest, MVTie) {
+    // Test out the Help Window.
+    std::string fake_input_data = "1\nok\nexit\n";
+    std::istringstream fake_input(fake_input_data);
+
+    std::streambuf* old_cin = std::cin.rdbuf();
+    std::streambuf* old_cout = std::cout.rdbuf();
+
+    std::cin.rdbuf(fake_input.rdbuf());
+
+    std::ostringstream captured_output;
+    std::cout.rdbuf(captured_output.rdbuf());
+
+    HelpWindow& help = HelpWindow::getInstance();
+    help.getHelp();
+
+    ASSERT_NO_FATAL_FAILURE(HelpWindow::getInstance());
+
+    std::cin.rdbuf(old_cin);
+    std::cout.rdbuf(old_cout);
+
+    std::string output = captured_output.str();
+
+    EXPECT_NE(output.find("The Single Transferable Voting (STV) election system allows candidates to be ranked"), std::string::npos) << "Expected STV help text.\n";
+
+    BallotHandler handler;
+
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots9.csv";
+    fs::path dest = "../web/uploads/ballots9.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
+    handler.handleFiles();
+    std::cin.rdbuf(cinbuf);
+
+    // Verify candidates
+    auto candidates = handler.getCandidates();
+    ASSERT_EQ(candidates.size(), 6) << "Expected 3 candidates from ballots1.csv header.";
+    EXPECT_EQ(candidates[0]->getName(), "Shana");
+    EXPECT_EQ(candidates[1]->getName(), "Jody");
+    EXPECT_EQ(candidates[2]->getName(), "Ahmed");
+    EXPECT_EQ(candidates[3]->getName(), "Mai");
+    EXPECT_EQ(candidates[4]->getName(), "Joe");
+    EXPECT_EQ(candidates[5]->getName(), "Alex");
+
+    // Verify ballots (2 from first file)
+    auto ballots = handler.receiveBallots();
+    EXPECT_EQ(ballots.size(), 8) << "Expected 8 total ballots.";
+
+    // Run a Plurality Election based off of the previously created ballots and candidates.
+    TestableMVElection election(1, ballots, candidates);
+
+    election.run();
+
+    std::vector<Candidate*> winners = election.getWinners();
+
+    ASSERT_EQ(winners.size(), 1) << "Expected exactly one winner.";
+    EXPECT_TRUE(winners[0]->getName() == "Shana" || winners[0]->getName() == "Joe") << "Expected Shana OR Joe to win with 1 vote.";
+
+    // Check to see if audit report exists.
+    EXPECT_TRUE(std::filesystem::exists("audit_report.txt")) << "Verify audit report was generated.";
+    std::ifstream infile("audit_report.txt");
+    ASSERT_TRUE(infile.is_open()) << "Unable to open audit_report.txt for reading.";
+
+    std::string content((std::istreambuf_iterator<char>(infile)),
+                         std::istreambuf_iterator<char>());
+    infile.close();
+
+    // Ensure correct contents written to audit report.
+    EXPECT_NE(content.find("Election"), std::string::npos)
+        << "Missing 'Election' header.";
+    EXPECT_NE(content.find("Date of the election:"), std::string::npos)
+        << "Missing 'Date of the election:' header.";
+    EXPECT_FALSE(content.find("Elected Candidates: Shana") == std::string::npos && content.find("Elected Candidates: Joe") == std::string::npos)
+        << "Missing the correct elected candidates";
 }
