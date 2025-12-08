@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+namespace fs = std::filesystem;
+
 class TestableSTVElection : public STVElection {
     public:
         TestableSTVElection(int nSeats, std::vector<Ballot *> b, std::vector<Candidate *> c)
@@ -61,13 +63,17 @@ TEST(PluralitySystemTest, PluralityRunThrough) {
 
     BallotHandler handler;
 
-    // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("2\n../testing/ballots1.csv\n../testing/ballots2.csv\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+    src = "../testing/ballots2.csv";
+    dest = "../web/uploads/ballots2.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
-
     std::cin.rdbuf(cinbuf);
 
     // Verify candidates
@@ -137,13 +143,17 @@ TEST(PluralitySystemTest, MultipleCandidatesPlurality) {
 
     BallotHandler handler;
 
-    // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("2\n../testing/ballots1.csv\n../testing/ballots2.csv\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+    src = "../testing/ballots2.csv";
+    dest = "../web/uploads/ballots2.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
-
     std::cin.rdbuf(cinbuf);
 
     // Verify candidates
@@ -215,13 +225,14 @@ TEST(PluralitySystemTest, PluralityTie) {
 
     BallotHandler handler;
 
-    // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("1\n../testing/ballots1.csv\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
-
     std::cin.rdbuf(cinbuf);
 
     // Verify candidates
@@ -297,13 +308,17 @@ TEST(STVSystemTest, STVRunThrough) {
 
     BallotHandler handler;
 
-    // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("2\n../testing/ballots1.csv\n../testing/ballots2.csv\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+    src = "../testing/ballots2.csv";
+    dest = "../web/uploads/ballots2.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
-
     std::cin.rdbuf(cinbuf);
 
     // Verify candidates
@@ -393,13 +408,17 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
 
     BallotHandler handler;
 
-    // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("2\n../testing/ballots1.csv\n../testing/ballots2.csv\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+    src = "../testing/ballots2.csv";
+    dest = "../web/uploads/ballots2.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
-
     std::cin.rdbuf(cinbuf);
 
     // Verify candidates
@@ -489,13 +508,14 @@ TEST(STVSystemTest, STVTie) {
 
     BallotHandler handler;
 
-    // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("1\n../testing/ballots3.csv\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots3.csv";
+    fs::path dest = "../web/uploads/ballots3.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
-
     std::cin.rdbuf(cinbuf);
 
     // Verify candidates
