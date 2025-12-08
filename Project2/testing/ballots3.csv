@@ -1,6 +1,7 @@
-PV
+STV
 1
+N
 "[Alice, PartyA]","[Bob, PartyB]","[Charlie, PartyC]"
-0,,
-,0,
-,,0
+0,1,2
+2,0,1
+2,1,0

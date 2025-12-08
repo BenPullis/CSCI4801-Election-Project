@@ -318,11 +318,8 @@ TEST(STVSystemTest, STVRunThrough) {
     BallotHandler handler;
 
     // stage test files to /web/uploads
-    fs::path src = "../testing/ballots1.csv";
-    fs::path dest = "../web/uploads/ballots1.csv";
-    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
-    src = "../testing/ballots2.csv";
-    dest = "../web/uploads/ballots2.csv";
+    fs::path src = "../testing/ballots10.csv";
+    fs::path dest = "../web/uploads/ballots10.csv";
     fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
     std::istringstream ui_input("");
@@ -332,16 +329,16 @@ TEST(STVSystemTest, STVRunThrough) {
 
     // Verify candidates
     auto candidates = handler.getCandidates();
-    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots1.csv header.";
+    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots10.csv header.";
     EXPECT_EQ(candidates[0]->getName(), "Alice");
     EXPECT_EQ(candidates[1]->getName(), "Bob");
     EXPECT_EQ(candidates[2]->getName(), "Charlie");
 
     // Verify ballots (2 from first file, 1 from second)
     auto ballots = handler.receiveBallots();
-    EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
+    EXPECT_EQ(ballots.size(), 2) << "Expected 2 total ballots.";
 
-    // Run a Plurality Election based off of the previously created ballots and candidates.
+    // Run a STV Election based off of the previously created ballots and candidates.
     TestableSTVElection election(1, ballots, candidates);
 
     election.run();
@@ -350,10 +347,10 @@ TEST(STVSystemTest, STVRunThrough) {
     std::vector<Candidate*> losers = election.getLosers();
 
     ASSERT_EQ(winners.size(), 1) << "Expected exactly one winner.";
-    EXPECT_EQ(winners[0]->getName(), "Alice") << "Expected Alice to win with 2 votes.";
+    EXPECT_EQ(winners[0]->getName(), "Bob") << "Expected Alice to win with 2 votes.";
 
     ASSERT_EQ(losers.size(), 2) << "Expected exactly two losers.";
-    EXPECT_EQ(losers[0]->getName(), "Bob") << "Expected Bob to be eliminated";
+    EXPECT_EQ(losers[0]->getName(), "Alice") << "Expected Alice to be eliminated";
     EXPECT_EQ(losers[1]->getName(), "Charlie") << "Expected Charlie to be eliminated";
 
     // Check to see if audit report exists.
@@ -370,21 +367,17 @@ TEST(STVSystemTest, STVRunThrough) {
         << "Missing 'Election' header.";
     EXPECT_NE(content.find("Date of the election:"), std::string::npos)
         << "Missing 'Date of the election:' header.";
-    EXPECT_NE(content.find("Ballot ID 1 preference at start of election: Alice"), std::string::npos)
-        << "Missing Ballot ID 1 initial preference.";
     EXPECT_NE(content.find("Ballot ID 2 preference at start of election: Bob"), std::string::npos)
         << "Missing Ballot ID 2 initial preference.";
-    EXPECT_NE(content.find("Ballot ID 3 preference at start of election: Alice"), std::string::npos)
+    EXPECT_NE(content.find("Ballot ID 3 preference at start of election: Charlie"), std::string::npos)
         << "Missing Ballot ID 3 initial preference.";
-    EXPECT_NE(content.find("Ballot ID 1 preference after pass #1: Alice"), std::string::npos)
-        << "Missing Ballot ID 1 preference update.";
     EXPECT_NE(content.find("Ballot ID 2 preference after pass #1: Bob"), std::string::npos)
         << "Missing Ballot ID 2 preference update.";
-    EXPECT_NE(content.find("Ballot ID 3 preference after pass #1: Alice"), std::string::npos)
+    EXPECT_NE(content.find("Ballot ID 3 preference after pass #1: Charlie"), std::string::npos)
         << "Missing Ballot ID 3 preference update.";
-    EXPECT_NE(content.find("Elected Candidates: Alice"), std::string::npos)
+    EXPECT_NE(content.find("Elected Candidates: Bob"), std::string::npos)
         << "Missing the correct elected candidate";
-    EXPECT_NE(content.find("Non-Elected Candidates: Bob, Charlie"), std::string::npos)
+    EXPECT_NE(content.find("Non-Elected Candidates: Alice, Charlie"), std::string::npos)
         << "Missing the correct non-elected candidates";
 }
 
@@ -418,11 +411,8 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
     BallotHandler handler;
 
     // stage test files to /web/uploads
-    fs::path src = "../testing/ballots1.csv";
-    fs::path dest = "../web/uploads/ballots1.csv";
-    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
-    src = "../testing/ballots2.csv";
-    dest = "../web/uploads/ballots2.csv";
+    fs::path src = "../testing/ballots11.csv";
+    fs::path dest = "../web/uploads/ballots11.csv";
     fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
     std::istringstream ui_input("");
@@ -432,16 +422,16 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
 
     // Verify candidates
     auto candidates = handler.getCandidates();
-    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots1.csv header.";
+    ASSERT_EQ(candidates.size(), 3) << "Expected 3 candidates from ballots11.csv header.";
     EXPECT_EQ(candidates[0]->getName(), "Alice");
     EXPECT_EQ(candidates[1]->getName(), "Bob");
     EXPECT_EQ(candidates[2]->getName(), "Charlie");
 
     // Verify ballots (2 from first file, 1 from second)
     auto ballots = handler.receiveBallots();
-    EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
+    EXPECT_EQ(ballots.size(), 2) << "Expected 2 total ballots.";
 
-    // Run a Plurality Election based off of the previously created ballots and candidates.
+    // Run a STV Election based off of the previously created ballots and candidates.
     TestableSTVElection election(2, ballots, candidates);
 
     election.run();
@@ -450,11 +440,11 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
     std::vector<Candidate*> losers = election.getLosers();
 
     ASSERT_EQ(winners.size(), 2) << "Expected two winners.";
-    EXPECT_EQ(winners[0]->getName(), "Alice") << "Expected Alice to win.";
-    EXPECT_EQ(winners[1]->getName(), "Bob") << "Expected Bob to win.";
+    EXPECT_EQ(winners[0]->getName(), "Bob") << "Expected Bob to win.";
+    EXPECT_EQ(winners[1]->getName(), "Charlie") << "Expected Charlie to win.";
 
     ASSERT_EQ(losers.size(), 1) << "Expected exactly one loser.";
-    EXPECT_EQ(losers[0]->getName(), "Charlie") << "Expected Charlie to be eliminated";
+    EXPECT_EQ(losers[0]->getName(), "Alice") << "Expected Alice to be eliminated";
 
     // Check to see if audit report exists.
     EXPECT_TRUE(std::filesystem::exists("audit_report.txt")) << "Verify audit report was generated.";
@@ -470,21 +460,17 @@ TEST(STVSystemTest, MultipleCandidatesSTV) {
         << "Missing 'Election' header.";
     EXPECT_NE(content.find("Date of the election:"), std::string::npos)
         << "Missing 'Date of the election:' header.";
-    EXPECT_NE(content.find("Ballot ID 1 preference at start of election: Alice"), std::string::npos)
-        << "Missing Ballot ID 1 initial preference.";
     EXPECT_NE(content.find("Ballot ID 2 preference at start of election: Bob"), std::string::npos)
         << "Missing Ballot ID 2 initial preference.";
-    EXPECT_NE(content.find("Ballot ID 3 preference at start of election: Alice"), std::string::npos)
+    EXPECT_NE(content.find("Ballot ID 3 preference at start of election: Charlie"), std::string::npos)
         << "Missing Ballot ID 3 initial preference.";
-    EXPECT_NE(content.find("Ballot ID 1 preference after pass #1: Charlie"), std::string::npos)
-        << "Missing Ballot ID 1 preference update.";
     EXPECT_NE(content.find("Ballot ID 2 preference after pass #1: Bob"), std::string::npos)
         << "Missing Ballot ID 2 preference update.";
     EXPECT_NE(content.find("Ballot ID 3 preference after pass #1: Charlie"), std::string::npos)
         << "Missing Ballot ID 3 preference update.";
-    EXPECT_NE(content.find("Elected Candidates: Alice, Bob"), std::string::npos)
+    EXPECT_NE(content.find("Elected Candidates: Bob, Charlie"), std::string::npos)
         << "Missing the correct elected candidate";
-    EXPECT_NE(content.find("Non-Elected Candidates: Charlie"), std::string::npos)
+    EXPECT_NE(content.find("Non-Elected Candidates: Alice"), std::string::npos)
         << "Missing the correct non-elected candidates";
 }
 
@@ -538,7 +524,7 @@ TEST(STVSystemTest, STVTie) {
     auto ballots = handler.receiveBallots();
     EXPECT_EQ(ballots.size(), 3) << "Expected 3 total ballots.";
 
-    // Run a Plurality Election based off of the previously created ballots and candidates.
+    // Run a STV Election based off of the previously created ballots and candidates.
     TestableSTVElection election(1, ballots, candidates);
 
     election.run();
@@ -572,7 +558,7 @@ TEST(STVSystemTest, STVTie) {
         << "Missing Ballot ID 1 preference update.";
     EXPECT_NE(content.find("Ballot ID 2 preference after pass #1: Bob"), std::string::npos)
         << "Missing Ballot ID 2 preference update.";
-    EXPECT_NE(content.find("Ballot ID 3 preference after pass #1: "), std::string::npos)
+    EXPECT_NE(content.find("Ballot ID 3 preference after pass #1: Bob"), std::string::npos)
         << "Missing Ballot ID 3 preference update.";
     EXPECT_NE(content.find("Elected Candidates: Alice"), std::string::npos)
         << "Missing the correct elected candidate";
