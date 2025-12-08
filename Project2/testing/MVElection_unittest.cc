@@ -21,7 +21,7 @@ TEST(MVTests, MVRunFunction) {
     std::vector<Ballot*> ballots = {
         new Ballot(1, {1, 1, 1}),   // John, Tim, Marvin all chosen
         new Ballot(2, {1, 0, 0}),   // Only John
-        new Ballot(3, {1, 1, 0})    // Jon and Tim
+        new Ballot(3, {1, 1, 0})    // John and Tim
     };
 
     TestableMVElection election(1, ballots, candidates);
@@ -77,7 +77,7 @@ TEST(MVTests, MVTieRunFunction) {
         new Ballot(3, {0,1,0}),
         new Ballot(4, {1,0,0}),
         new Ballot(5, {0,1,0}),
-        new Ballot(6, {0,0,1})
+        new Ballot(6, {1,0,1})
     };
 
     TestableMVElection election(1, ballots, candidates);
