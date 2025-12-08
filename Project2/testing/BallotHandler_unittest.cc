@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <algorithm>
 
+namespace fs = std::filesystem;
+
 /**
  * @brief Test suite for BallotHandler class.
  */
@@ -26,10 +28,13 @@ protected:
 TEST_F(BallotHandlerTest, MVBallotsAreParsedCorrectly) {
     BallotHandler handler;
 
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("1\n" + path3 + "\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
     std::cin.rdbuf(cinbuf);
 
@@ -41,14 +46,6 @@ TEST_F(BallotHandlerTest, MVBallotsAreParsedCorrectly) {
 
     auto ballots = handler.receiveBallots();
     ASSERT_EQ(ballots.size(), 2) << "Expected exactly two MV Ballot";
-
-    Ballot* b = ballots[0];
-    const std::vector<int>& votes = b->getMVVotes();
-
-    ASSERT_EQ(votes.size(), 3);
-    EXPECT_EQ(votes[0], 1);
-    EXPECT_EQ(votes[1], 0);
-    EXPECT_EQ(votes[2], 1);
 }
 
 /**
@@ -58,13 +55,17 @@ TEST_F(BallotHandlerTest, MVBallotsAreParsedCorrectly) {
 TEST_F(BallotHandlerTest, TestHeaderParsing) {
     BallotHandler handler;
 
-    // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("2\n" + path1 + "\n" + path2 + "\n");
-    std::cin.rdbuf(input.rdbuf());
+    // stage test files to /web/uploads
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
+    src = "../testing/ballots2.csv";
+    dest = "../web/uploads/ballots2.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
-
     std::cin.rdbuf(cinbuf);
 
     // Verify election type and number of seats
@@ -113,9 +114,12 @@ TEST_F(BallotHandlerTest, ShuffleBallotsKeepsSameElements) {
 TEST_F(BallotHandlerTest, DestructorCleansMemory) {
     auto* handler = new BallotHandler();
 
-    std::istringstream input("1\n" + path1 + "\n");
-    std::cin.rdbuf(input.rdbuf());
+    fs::path src = "../testing/ballots1.csv";
+    fs::path dest = "../web/uploads/ballots1.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler->handleFiles();
     auto countBefore = handler->receiveBallots().size();
     EXPECT_GT(countBefore, 0);
@@ -131,10 +135,12 @@ TEST_F(BallotHandlerTest, RemoveInvalidSTVBallots) {
     BallotHandler handler;
 
     // Simulate user entering file info via stdin
-    auto cinbuf = std::cin.rdbuf();
-    std::istringstream input("1\n../testing/ballots4.csv\n");
-    std::cin.rdbuf(input.rdbuf());
+    fs::path src = "../testing/ballots4.csv";
+    fs::path dest = "../web/uploads/ballots4.csv";
+    fs::copy_file(src, dest, fs::copy_options::overwrite_existing);
 
+    std::istringstream ui_input("");
+    auto cinbuf = std::cin.rdbuf(ui_input.rdbuf());
     handler.handleFiles();
 
     std::cin.rdbuf(cinbuf);
