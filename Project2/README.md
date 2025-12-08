@@ -13,6 +13,9 @@ Enter any key when prompted and then use the GUI to select the CSV files to use
 To Run Tests:
 Go to Project1/src and run "make test"
 
+Note about testing:
+Multiple GUI tabs will open when running tests, these should be ignored, the tests will complete on their own
+
 Note about STV elections:
 The BallotHandler class expects the third line in the STV header files to be "Y" or "N"
 to determine whether the ballots will be shuffled or not. This line is optional, so if
